@@ -188,9 +188,9 @@ export default function App() {
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-indigo-300 font-bold uppercase text-xs tracking-widest">
-                <TrendingUp size={18} /> Secondary Liquidity
+                <TrendingUp size={18} /> Starship Dominance
               </div>
-              <p className="text-sm text-indigo-100/70 leading-relaxed">Our tokenized structure aims to provide secondary market liquidity before the projected mid-2026 public listing.</p>
+              <p className="text-sm text-indigo-100/70 leading-relaxed">SpaceX now commands over 85% of global launch mass. With Starship V3 fully operational, the company has effectively commoditized access to space</p>
             </div>
           </div>
         </div>
@@ -334,3 +334,4 @@ export default function App() {
     </div>
   );
 }
+
