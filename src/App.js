@@ -188,7 +188,8 @@ export default function App() {
       <div className="lg:col-span-2">
         <div className="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
           <div className="bg-slate-900 p-6 text-white flex items-center gap-2">
-            <Calculator size={20} /> <span>Simulator</span>
+            <Calculator size={20} /> <span>Demand Simulator</span>
+            <p className="text-slate-300 text-sm mt-1">Estimate your returns and book your slot.</p>
           </div>
           {!submitted ? (
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
