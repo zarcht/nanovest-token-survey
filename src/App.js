@@ -153,22 +153,23 @@ export default function App() {
           </div>
         </div>
 
-        <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-xl">
-          <h3 className="text-lg font-bold mb-6 flex items-center gap-2 uppercase tracking-widest text-indigo-400">
-            <Info size={20} /> Investment Thesis
+  {/* USP Section */}
+        <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-8 shadow-xl">
+          <h3 className="text-xl font-bold mb-6 flex items-center gap-2 uppercase tracking-wide">
+            <Info size={24} className="text-indigo-400" /> Investment Thesis
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
-              <p className="flex items-center gap-2 text-indigo-300 font-bold uppercase text-xs tracking-tighter">
-                <Cpu size={16} /> xAI/SpaceX Synergy
-              </p>
-              <p className="text-sm text-slate-400 leading-relaxed">Direct exposure to the merger of orbital infrastructure and frontier AGI. Powering the Grok-Starlink intelligence mesh.</p>
+              <div className="flex items-center gap-2 text-indigo-300 font-bold uppercase text-xs tracking-widest">
+                <Cpu size={18} /> Vertical AI Synergy
+              </div>
+              <p className="text-sm text-indigo-100/70 leading-relaxed">Exposure to the xAI/SpaceX merger. Own a stake in the infrastructure powering the next generation of orbital data intelligence.</p>
             </div>
             <div className="space-y-3">
-              <p className="flex items-center gap-2 text-indigo-300 font-bold uppercase text-xs tracking-tighter">
-                <TrendingUp size={16} /> Secondary Liquidity
-              </p>
-              <p className="text-sm text-slate-400 leading-relaxed">Tokenized equity structure aims to provide secondary market windows ahead of the projected mid-2026 IPO.</p>
+              <div className="flex items-center gap-2 text-indigo-300 font-bold uppercase text-xs tracking-widest">
+                <TrendingUp size={18} /> Starship Dominance
+              </div>
+              <p className="text-sm text-indigo-100/70 leading-relaxed">SpaceX now commands over 85% of global launch mass. With Starship V3 fully operational, the company has effectively commoditized access to space</p>
             </div>
           </div>
         </div>
@@ -307,3 +308,4 @@ export default function App() {
     </div>
   );
 }
+
