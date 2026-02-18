@@ -36,17 +36,27 @@ const PRODUCT_DETAILS = {
 };
 
 // --- Firebase Setup ---
+import { initializeApp, getApps } from 'firebase/app'; // Add getApps to imports
+
 let db, auth;
-const configSource = process.env.REACT_APP_FIREBASE_CONFIG || "{}";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBYbnjtOoQZp43z_aiKnVMAKtOcUw9EXxU",
+  authDomain: "nano-token-survey.firebaseapp.com",
+  projectId: "nano-token-survey",
+  storageBucket: "nano-token-survey.firebasestorage.app",
+  messagingSenderId: "294925629622",
+  appId: "1:294925629622:web:42448455940d855c194e17"
+};
+
 try {
-  const firebaseConfig = JSON.parse(configSource);
-  if (firebaseConfig.apiKey) {
-    const app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-  }
+  // Check if an app is already initialized to avoid "Duplicate App" errors
+  const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+  auth = getAuth(app);
+  db = getFirestore(app);
+  console.log("Firebase initialized successfully with Project: nano-token-survey");
 } catch (e) {
-  console.error("Firebase Config Missing or Invalid:", e);
+  console.error("Firebase initialization error:", e);
 }
 
 const appId = 'spacex-token-survey-2026';
@@ -266,3 +276,4 @@ export default function App() {
     </div>
   );
 }
+
