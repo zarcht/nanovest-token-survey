@@ -24,7 +24,9 @@ import {
   Zap,
   AlertCircle,
   ExternalLink,
-  FileText
+  FileText,
+  PieChart,
+  ArrowUpRight
 } from 'lucide-react';
 
 // --- Configuration ---
@@ -148,57 +150,107 @@ export default function App() {
           </div>
         </div>
 
-        {/* --- NEW RESEARCH SECTION --- */}
+        {/* --- VISUAL FINANCIAL INTELLIGENCE SECTION --- */}
         <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-8">
             <h3 className="text-xl font-bold flex items-center gap-2 uppercase tracking-wide">
-              <BarChart3 size={22} className="text-indigo-600" /> Deep Research: SpaceX Financials
+              <BarChart3 size={22} className="text-indigo-600" /> Financial Intelligence
             </h3>
             <a 
               href="https://fintool.com/news/spacex-8-billion-profit-ipo-financials" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-[10px] font-bold text-indigo-600 flex items-center gap-1 hover:underline uppercase tracking-widest"
+              className="text-[10px] font-bold text-indigo-600 flex items-center gap-1 hover:underline uppercase tracking-widest bg-indigo-50 px-3 py-1.5 rounded-full"
             >
-              Full Report <ExternalLink size={12} />
+              2026 Report <ExternalLink size={12} />
             </a>
           </div>
           
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <p className="text-xs font-black text-slate-400 uppercase tracking-widest">2025 Financial Performance</p>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  SpaceX reported an unprecedented <strong>$8 Billion EBITDA profit</strong> on revenues of ~$16B in 2025. This marks the company's transition from a high-burn R&D phase to a dominant, cash-generating infrastructure giant.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Valuation Trajectory</p>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  After reaching a <strong>$800B private valuation</strong> in late 2025, major investment banks are now modeling a <strong>$1.5 Trillion IPO</strong> for mid-2026, potentially the largest technology listing in history.
-                </p>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+             {/* 2025 Financial Summary Table */}
+             <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                <div className="flex items-center gap-2 mb-4 text-slate-500">
+                    <PieChart size={16} />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">2025 Performance</span>
+                </div>
+                <div className="space-y-4">
+                    <div className="flex justify-between items-end border-b border-slate-200 pb-2">
+                        <span className="text-sm font-medium text-slate-600">Total Revenue</span>
+                        <span className="text-lg font-black text-slate-900">$15.5B</span>
+                    </div>
+                    <div className="flex justify-between items-end border-b border-slate-200 pb-2">
+                        <span className="text-sm font-medium text-slate-600">EBITDA Profit</span>
+                        <span className="text-lg font-black text-emerald-600">$8.0B</span>
+                    </div>
+                    <div className="flex justify-between items-end border-b border-slate-200 pb-2">
+                        <span className="text-sm font-medium text-slate-600">Starlink Users</span>
+                        <span className="text-lg font-black text-indigo-600">9M+</span>
+                    </div>
+                     {/* Revenue Split Bar */}
+                    <div className="pt-2">
+                        <div className="flex justify-between text-[10px] uppercase font-bold text-slate-400 mb-1">
+                            <span>Starlink (~76%)</span>
+                            <span>Launch (~24%)</span>
+                        </div>
+                        <div className="h-3 w-full bg-slate-200 rounded-full overflow-hidden flex">
+                            <div className="h-full bg-indigo-600 w-[76%]"></div>
+                            <div className="h-full bg-slate-400 w-[24%]"></div>
+                        </div>
+                    </div>
+                </div>
+             </div>
 
-            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex items-start gap-4">
-              <div className="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
-                <FileText className="text-indigo-600" size={24} />
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-sm mb-1">Starlink: The Revenue Engine</h4>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Research indicates Starlink now accounts for nearly 80% of total revenue, with 9M+ global subscribers. The 2026 merger with xAI is expected to further vertically integrate SpaceX's orbital dominance with frontier AI compute.
-                </p>
-              </div>
-            </div>
+             {/* Valuation Growth Chart */}
+             <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col">
+                <div className="flex items-center gap-2 mb-4 text-slate-500">
+                    <TrendingUp size={16} />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Valuation History (USD)</span>
+                </div>
+                
+                <div className="flex-1 flex items-end justify-between gap-2 h-32 mt-2">
+                    {/* Bar 1 */}
+                    <div className="flex flex-col items-center gap-1 w-full group">
+                        <span className="text-[9px] font-bold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">$137B</span>
+                        <div className="w-full bg-slate-300 rounded-t-lg h-[9%] relative hover:bg-slate-400 transition-colors"></div>
+                        <span className="text-[9px] font-bold text-slate-500">2023</span>
+                    </div>
+                    {/* Bar 2 */}
+                    <div className="flex flex-col items-center gap-1 w-full group">
+                        <span className="text-[9px] font-bold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">$350B</span>
+                        <div className="w-full bg-slate-300 rounded-t-lg h-[23%] hover:bg-slate-400 transition-colors"></div>
+                        <span className="text-[9px] font-bold text-slate-500">2024</span>
+                    </div>
+                    {/* Bar 3 */}
+                    <div className="flex flex-col items-center gap-1 w-full group">
+                         <span className="text-[9px] font-bold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">$800B</span>
+                        <div className="w-full bg-slate-800 rounded-t-lg h-[53%] hover:bg-slate-700 transition-colors"></div>
+                        <span className="text-[9px] font-bold text-slate-900">2025</span>
+                    </div>
+                    {/* Bar 4 (Projection) */}
+                    <div className="flex flex-col items-center gap-1 w-full group">
+                         <span className="text-[9px] font-bold text-indigo-600 opacity-100">$1.5T</span>
+                        <div className="w-full bg-indigo-600 rounded-t-lg h-[100%] relative overflow-hidden">
+                             <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                        </div>
+                        <span className="text-[9px] font-bold text-indigo-700">IPO '26</span>
+                    </div>
+                </div>
+             </div>
+          </div>
+
+          <div className="bg-indigo-50/50 rounded-xl p-4 border border-indigo-100 text-xs text-indigo-900 leading-relaxed flex items-start gap-3">
+            <Info className="shrink-0 text-indigo-500 mt-0.5" size={16} />
+            <p>
+                <strong>Analyst Note:</strong> Starlink has officially decoupled from launch revenue, now accounting for ~$11.8B (approx 76%) of total inflows. The $1.5T IPO target assumes successful integration with xAI's orbital compute network.
+            </p>
           </div>
         </div>
-        {/* --- END RESEARCH SECTION --- */}
+        {/* --- END FINANCIAL INTELLIGENCE SECTION --- */}
 
         {/* Thesis Section */}
         <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-3xl p-8 shadow-xl">
           <h3 className="text-xl font-bold mb-6 flex items-center gap-2 uppercase tracking-wide">
-            <Info size={24} className="text-indigo-400" /> Investment Thesis
+            <ArrowUpRight size={24} className="text-indigo-400" /> Investment Thesis
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
