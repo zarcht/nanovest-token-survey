@@ -22,7 +22,9 @@ import {
   Lock,
   Cpu,
   Zap,
-  AlertCircle
+  AlertCircle,
+  ExternalLink,
+  FileText
 } from 'lucide-react';
 
 // --- Configuration ---
@@ -45,7 +47,6 @@ const firebaseConfig = {
   appId: "1:294925629622:web:42448455940d855c194e17"
 };
 
-// Initialize
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -57,7 +58,6 @@ export default function App() {
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
-  // Form State
   const [amount, setAmount] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -65,19 +65,14 @@ export default function App() {
   const [submitted, setSubmitted] = useState(false);
   const [leads, setLeads] = useState([]);
 
-  // Auth Sync
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
-      if (u) {
-        setUser(u);
-      } else {
-        signInAnonymously(auth).catch(console.error);
-      }
+      if (u) setUser(u);
+      else signInAnonymously(auth).catch(console.error);
     });
     return () => unsubscribe();
   }, []);
 
-  // Admin Data Sync
   useEffect(() => {
     if (!user || !db || !isAdmin) return;
     const q = query(collection(db, "spacex_leads"));
@@ -104,7 +99,6 @@ export default function App() {
       alert(`Min investment is ${formatCurrency(PRODUCT_DETAILS.minInvestment)}`);
       return;
     }
-
     setIsSubmitting(true);
     try {
       await addDoc(collection(db, "spacex_leads"), {
@@ -118,7 +112,7 @@ export default function App() {
       setSubmitted(true);
     } catch (error) {
       console.error("Submit Error:", error);
-      alert("Submission failed. Check Firestore Rules.");
+      alert("Submission failed.");
     } finally {
       setIsSubmitting(false);
     }
@@ -127,6 +121,7 @@ export default function App() {
   const userView = (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 animate-in fade-in duration-700">
       <div className="lg:col-span-3 space-y-6">
+        {/* Main Hero Card */}
         <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden">
           <div className="absolute -top-10 -right-10 opacity-[0.03] rotate-12">
             <Rocket size={240} />
@@ -153,8 +148,55 @@ export default function App() {
           </div>
         </div>
 
-  {/* USP Section */}
-        <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-8 shadow-xl">
+        {/* --- NEW RESEARCH SECTION --- */}
+        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold flex items-center gap-2 uppercase tracking-wide">
+              <BarChart3 size={22} className="text-indigo-600" /> Deep Research: SpaceX Financials
+            </h3>
+            <a 
+              href="https://fintool.com/news/spacex-8-billion-profit-ipo-financials" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[10px] font-bold text-indigo-600 flex items-center gap-1 hover:underline uppercase tracking-widest"
+            >
+              Full Report <ExternalLink size={12} />
+            </a>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <p className="text-xs font-black text-slate-400 uppercase tracking-widest">2025 Financial Performance</p>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  SpaceX reported an unprecedented <strong>$8 Billion EBITDA profit</strong> on revenues of ~$16B in 2025. This marks the company's transition from a high-burn R&D phase to a dominant, cash-generating infrastructure giant.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Valuation Trajectory</p>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  After reaching a <strong>$800B private valuation</strong> in late 2025, major investment banks are now modeling a <strong>$1.5 Trillion IPO</strong> for mid-2026, potentially the largest technology listing in history.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex items-start gap-4">
+              <div className="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
+                <FileText className="text-indigo-600" size={24} />
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900 text-sm mb-1">Starlink: The Revenue Engine</h4>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Research indicates Starlink now accounts for nearly 80% of total revenue, with 9M+ global subscribers. The 2026 merger with xAI is expected to further vertically integrate SpaceX's orbital dominance with frontier AI compute.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* --- END RESEARCH SECTION --- */}
+
+        {/* Thesis Section */}
+        <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-3xl p-8 shadow-xl">
           <h3 className="text-xl font-bold mb-6 flex items-center gap-2 uppercase tracking-wide">
             <Info size={24} className="text-indigo-400" /> Investment Thesis
           </h3>
@@ -169,7 +211,7 @@ export default function App() {
               <div className="flex items-center gap-2 text-indigo-300 font-bold uppercase text-xs tracking-widest">
                 <TrendingUp size={18} /> Starship Dominance
               </div>
-              <p className="text-sm text-indigo-100/70 leading-relaxed">SpaceX now commands over 85% of global launch mass. With Starship V3 fully operational, the company has effectively commoditized access to space</p>
+              <p className="text-sm text-indigo-100/70 leading-relaxed">SpaceX now commands over 85% of global launch mass. With Starship V3 fully operational, the company has effectively commoditized access to space.</p>
             </div>
           </div>
         </div>
@@ -239,8 +281,8 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
       <nav className="bg-white border-b sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
-           <div className="bg-indigo-600 p-1.5 rounded-lg text-white"><TrendingUp size={20}/></div>
-           <span className="font-black text-xl uppercase tracking-tighter">Nano<span className="text-indigo-600">Frontier</span></span>
+            <div className="bg-indigo-600 p-1.5 rounded-lg text-white"><TrendingUp size={20}/></div>
+            <span className="font-black text-xl uppercase tracking-tighter">Nano<span className="text-indigo-600">Frontier</span></span>
         </div>
         <div className="flex items-center gap-4">
           <span className={`text-[10px] font-bold ${user ? 'text-emerald-500' : 'text-orange-400'}`}>
@@ -256,8 +298,8 @@ export default function App() {
         {isAdmin ? (
           <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
             <div className="flex justify-between items-end">
-               <h2 className="text-3xl font-black uppercase tracking-tight">Demand Tracker</h2>
-               <button onClick={() => setIsAdmin(false)} className="text-xs font-bold text-slate-400 hover:text-red-500 uppercase">Exit Admin</button>
+                <h2 className="text-3xl font-black uppercase tracking-tight">Demand Tracker</h2>
+                <button onClick={() => setIsAdmin(false)} className="text-xs font-bold text-slate-400 hover:text-red-500 uppercase">Exit Admin</button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white p-8 rounded-3xl border-2 border-slate-100">
@@ -308,4 +350,3 @@ export default function App() {
     </div>
   );
 }
-
