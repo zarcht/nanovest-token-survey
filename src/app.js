@@ -87,7 +87,7 @@ const db = getFirestore(app);
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
 // --- Main Component ---
-export default function BookBuildingTool() {
+function BookBuildingTool() {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false); // Toggle for Admin View
   
@@ -677,3 +677,4 @@ export default function BookBuildingTool() {
     </div>
   );
 }
+
