@@ -282,8 +282,8 @@ export default function App() {
                   <AlertCircle size={10} /> Minimum Allocation: {formatCurrency(PRODUCT_DETAILS.minInvestment)}
                 </p>
               </div>
-
-              //--- 2. UI & Disclaimer Update ---//
+                  
+                 // *(2. UI & Disclaimer Update)
               <div className="bg-indigo-50/50 rounded-2xl p-5 border-2 border-dashed border-indigo-100">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] text-indigo-600 font-bold uppercase tracking-widest">Target Value</span>
@@ -397,6 +397,7 @@ export default function App() {
     </div>
   );
 }
+
 
 
 
