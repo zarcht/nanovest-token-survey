@@ -83,7 +83,8 @@ export default function App() {
   }, [user, isAdmin]);
 
   const numericAmount = Number(amount) || 0;
-  const projectedIpoValue = numericAmount * 1.50;
+  // Adjusted multiplier to reflect conservative 1.0T target if current is near 800B-1T
+  const projectedIpoValue = numericAmount * 1.25; 
   const formatCurrency = (val) => new Intl.NumberFormat('en-US', { 
     style: 'currency', 
     currency: PRODUCT_DETAILS.currency,
@@ -198,36 +199,36 @@ export default function App() {
                     {/* Bar 1: 2023 */}
                     <div className="flex flex-col items-center justify-end w-full h-full group relative">
                         <span className="absolute -top-5 text-[9px] font-bold text-slate-400">$137B</span>
-                        <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '9%' }}></div>
+                        <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '14%' }}></div>
                     </div>
                     
                     {/* Bar 2: 2024 */}
                     <div className="flex flex-col items-center justify-end w-full h-full group relative">
                         <span className="absolute -top-5 text-[9px] font-bold text-slate-400">$350B</span>
-                        <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '23%' }}></div>
+                        <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '35%' }}></div>
                     </div>
                     
                     {/* Bar 3: 2025 */}
                     <div className="flex flex-col items-center justify-end w-full h-full group relative">
                         <span className="absolute -top-5 text-[9px] font-bold text-slate-900">$800B</span>
-                        <div className="w-full bg-slate-800 rounded-t-sm hover:bg-slate-700 transition-colors" style={{ height: '53%' }}></div>
+                        <div className="w-full bg-slate-800 rounded-t-sm hover:bg-slate-700 transition-colors" style={{ height: '80%' }}></div>
                     </div>
                     
-                    {/* Bar 4: IPO */}
+                    {/* Bar 4: 2026 Target */}
                     <div className="flex flex-col items-center justify-end w-full h-full group relative">
-                        <span className="absolute -top-5 text-[9px] font-bold text-indigo-600">$1.5T</span>
+                        <span className="absolute -top-5 text-[9px] font-bold text-indigo-600">$1.0T</span>
                         <div className="w-full bg-indigo-600 rounded-t-sm relative overflow-hidden" style={{ height: '100%' }}>
                              <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
                         </div>
                     </div>
                 </div>
 
-                {/* X-Axis Labels - Reduced bottom margin/padding implicitly by tight packing */}
+                {/* X-Axis Labels */}
                 <div className="flex justify-between mt-2 px-1">
                     <span className="text-[9px] font-bold text-slate-400 w-full text-center">2023</span>
                     <span className="text-[9px] font-bold text-slate-400 w-full text-center">2024</span>
                     <span className="text-[9px] font-bold text-slate-900 w-full text-center">2025</span>
-                    <span className="text-[9px] font-bold text-indigo-600 w-full text-center">IPO '26</span>
+                    <span className="text-[9px] font-bold text-indigo-600 w-full text-center">2026</span>
                 </div>
              </div>
           </div>
@@ -288,7 +289,7 @@ export default function App() {
                   <span className="text-2xl font-black text-indigo-700">{formatCurrency(projectedIpoValue)}</span>
                 </div>
                 <p className="text-[10px] text-slate-400 mt-3 italic">
-                   {`* Disclaimer: $1.5T target is an indicative projection based on market data.`}
+                   {`* Disclaimer: $1.0T target is an indicative projection based on market data.`}
                 </p>
               </div>
 
