@@ -24,15 +24,15 @@ import {
   Zap,
   AlertCircle,
   ExternalLink,
-  FileText,
   PieChart,
   ArrowUpRight
 } from 'lucide-react';
 
 // --- Configuration ---
+// Using backticks (`) for description to prevent "Unterminated string constant" errors if text wraps
 const PRODUCT_DETAILS = {
   name: "SpaceX + xAI Frontier Token",
-  description: "Gain exclusive equity exposure to the SpaceX-xAI ecosystem. This tokenization series provides a direct stake in the world's dominant orbital infrastructure and frontier artificial intelligence.",
+  description: `Gain exclusive equity exposure to the SpaceX-xAI ecosystem. This tokenization series provides a direct stake in the world's dominant orbital infrastructure and frontier artificial intelligence.`,
   currentValuation: "$1 Trillion",
   revenueBacklog: "$22 Billion+",
   tenor: "Pre-IPO Series",
@@ -98,6 +98,7 @@ export default function App() {
     e.preventDefault();
     if (!user || !db) return;
     if (numericAmount < PRODUCT_DETAILS.minInvestment) {
+      // Using backticks here safely handles the string interpolation
       alert(`Min investment is ${formatCurrency(PRODUCT_DETAILS.minInvestment)}`);
       return;
     }
@@ -201,26 +202,26 @@ export default function App() {
                     {/* Background Grid Line */}
                     <div className="absolute bottom-0 w-full h-[1px] bg-slate-200"></div>
 
-                    {/* Bar 1: 2023 ($137B / 1500 * 100 = ~9%) */}
+                    {/* Bar 1: 2023 */}
                     <div className="flex flex-col items-center gap-1 w-full group relative z-10">
                         <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '9%' }}></div>
                         <span className="text-[9px] font-bold text-slate-500">2023</span>
                     </div>
                     
-                    {/* Bar 2: 2024 ($350B / 1500 * 100 = ~23%) */}
+                    {/* Bar 2: 2024 */}
                     <div className="flex flex-col items-center gap-1 w-full group relative z-10">
                         <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '23%' }}></div>
                         <span className="text-[9px] font-bold text-slate-500">2024</span>
                     </div>
                     
-                    {/* Bar 3: 2025 ($800B / 1500 * 100 = ~53%) */}
+                    {/* Bar 3: 2025 */}
                     <div className="flex flex-col items-center gap-1 w-full group relative z-10">
                         <span className="text-[9px] font-bold text-slate-900 absolute -top-5 opacity-0 group-hover:opacity-100 transition-opacity">$800B</span>
                         <div className="w-full bg-slate-800 rounded-t-sm hover:bg-slate-700 transition-colors" style={{ height: '53%' }}></div>
                         <span className="text-[9px] font-bold text-slate-900">2025</span>
                     </div>
                     
-                    {/* Bar 4: IPO ($1.5T = 100%) */}
+                    {/* Bar 4: IPO */}
                     <div className="flex flex-col items-center gap-1 w-full group relative z-10">
                          <span className="text-[9px] font-bold text-indigo-600 absolute -top-5">$1.5T</span>
                         <div className="w-full bg-indigo-600 rounded-t-sm relative overflow-hidden" style={{ height: '100%' }}>
@@ -244,13 +245,17 @@ export default function App() {
               <div className="flex items-center gap-2 text-indigo-300 font-bold uppercase text-xs tracking-widest">
                 <Cpu size={18} /> Vertical AI Synergy
               </div>
-              <p className="text-sm text-indigo-100/70 leading-relaxed">Exposure to the xAI/SpaceX merger. Own a stake in the infrastructure powering the next generation of orbital data intelligence.</p>
+              <p className="text-sm text-indigo-100/70 leading-relaxed">
+                {`Exposure to the xAI/SpaceX merger. Own a stake in the infrastructure powering the next generation of orbital data intelligence.`}
+              </p>
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-indigo-300 font-bold uppercase text-xs tracking-widest">
                 <TrendingUp size={18} /> Starship Dominance
               </div>
-              <p className="text-sm text-indigo-100/70 leading-relaxed">SpaceX now commands over 85% of global launch mass. With Starship V3 fully operational, the company has effectively commoditized access to space.</p>
+              <p className="text-sm text-indigo-100/70 leading-relaxed">
+                {`SpaceX now commands over 85% of global launch mass. With Starship V3 fully operational, the company has effectively commoditized access to space.`}
+              </p>
             </div>
           </div>
         </div>
@@ -283,7 +288,111 @@ export default function App() {
                   <span className="text-[10px] text-indigo-600 font-bold uppercase tracking-widest">Target Value</span>
                   <span className="text-2xl font-black text-indigo-700">{formatCurrency(projectedIpoValue)}</span>
                 </div>
-                <p className="text-[10px] text-slate-400 mt-3 italic">* Disclaimer: $1.5T target is an indicative projection based on market data.</p>
+                <p className="text-[10px] text-slate-400 mt-3 italic">
+                   {`* Disclaimer: $1.5T target is an indicative projection based on market data.`}
+                </p>
               </div>
 
-              <div className="space-y-
+              <div className="space-y-4">
+                <div className="relative">
+                  <User size={16} className="absolute left-4 top-4 text-slate-400" />
+                  <input type="text" required value={name} onChange={(e) => setName(e.target.value)} className="pl-12 w-full rounded-xl border border-slate-200 p-4 text-sm focus:border-indigo-500 outline-none" placeholder="Full Name" />
+                </div>
+                <div className="relative">
+                  <Mail size={16} className="absolute left-4 top-4 text-slate-400" />
+                  <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="pl-12 w-full rounded-xl border border-slate-200 p-4 text-sm focus:border-indigo-500 outline-none" placeholder="Email Address" />
+                </div>
+              </div>
+              
+              <button type="submit" disabled={isSubmitting} className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg hover:bg-indigo-700 active:scale-[0.98] transition-all uppercase tracking-[0.2em] text-xs">
+                {isSubmitting ? 'Transmitting...' : 'Submit Interest'}
+              </button>
+            </form>
+          ) : (
+            <div className="p-10 text-center space-y-6 animate-in zoom-in duration-300">
+              <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                <CheckCircle size={40} />
+              </div>
+              <h3 className="text-2xl font-black text-slate-900">Success</h3>
+              <p className="text-slate-500 text-sm">Your interest has been logged. Our team will contact you with priority details.</p>
+              <button onClick={() => setSubmitted(false)} className="text-indigo-600 text-xs font-bold uppercase tracking-widest hover:underline">New Entry</button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
+      <nav className="bg-white border-b sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-2">
+            <div className="bg-indigo-600 p-1.5 rounded-lg text-white"><TrendingUp size={20}/></div>
+            <span className="font-black text-xl uppercase tracking-tighter">Nano<span className="text-indigo-600">Frontier</span></span>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className={`text-[10px] font-bold ${user ? 'text-emerald-500' : 'text-orange-400'}`}>
+            ● {user ? 'CONNECTED' : 'CONNECTING'}
+          </span>
+          <button onClick={() => setShowPasswordModal(true)} className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition-colors">
+            <Lock size={12} className="inline mr-1" /> {isAdmin ? 'Dashboard' : 'Admin'}
+          </button>
+        </div>
+      </nav>
+
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        {isAdmin ? (
+          <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
+            <div className="flex justify-between items-end">
+                <h2 className="text-3xl font-black uppercase tracking-tight">Demand Tracker</h2>
+                <button onClick={() => setIsAdmin(false)} className="text-xs font-bold text-slate-400 hover:text-red-500 uppercase">Exit Admin</button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white p-8 rounded-3xl border-2 border-slate-100">
+                <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest">Total Volume</p>
+                <h3 className="text-4xl font-black text-indigo-600 mt-2">{formatCurrency(leads.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0))}</h3>
+              </div>
+              <div className="bg-white p-8 rounded-3xl border-2 border-slate-100">
+                <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest">Interested Parties</p>
+                <h3 className="text-4xl font-black text-slate-900 mt-2">{leads.length}</h3>
+              </div>
+            </div>
+            <div className="bg-white rounded-3xl border-2 border-slate-100 overflow-hidden shadow-sm">
+              <table className="w-full text-sm text-left">
+                <thead className="bg-slate-50 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+                  <tr><th className="p-6">Investor</th><th className="p-6 text-right">Commitment</th></tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {leads.map(l => (
+                    <tr key={l.id} className="hover:bg-slate-50"><td className="p-6 font-bold">{l.userName}</td><td className="p-6 text-right font-black text-indigo-600">{formatCurrency(l.amount)}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ) : userView}
+      </main>
+
+      {showPasswordModal && !isAdmin && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl">
+            <h3 className="font-black text-xl mb-2">Access Portal</h3>
+            <p className="text-xs text-slate-500 mb-6 font-medium">Authentication required for demand analytics.</p>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (passwordInput === 'spacex2026') { setIsAdmin(true); setShowPasswordModal(false); }
+              else setPasswordError(true);
+            }} className="space-y-4">
+              <input type="password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} className="w-full border-2 rounded-xl p-4 outline-none font-mono" placeholder="••••••••" autoFocus />
+              {passwordError && <p className="text-red-500 text-[10px] font-black uppercase text-center tracking-widest">Invalid Key</p>}
+              <div className="flex gap-3">
+                <button type="button" onClick={() => setShowPasswordModal(false)} className="flex-1 py-3 font-bold text-slate-400 text-sm">Cancel</button>
+                <button type="submit" className="flex-1 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm">Verify</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
