@@ -13,15 +13,12 @@ import {
   Calculator, 
   TrendingUp, 
   Rocket, 
-  Info, 
   User, 
   Mail, 
   CheckCircle, 
   BarChart3, 
-  Globe,
   Lock,
   Cpu,
-  Zap,
   AlertCircle,
   ExternalLink,
   PieChart,
@@ -29,7 +26,6 @@ import {
 } from 'lucide-react';
 
 // --- Configuration ---
-// Using backticks (`) for description to prevent "Unterminated string constant" errors if text wraps
 const PRODUCT_DETAILS = {
   name: "SpaceX + xAI Frontier Token",
   description: `Gain exclusive equity exposure to the SpaceX-xAI ecosystem. This tokenization series provides a direct stake in the world's dominant orbital infrastructure and frontier artificial intelligence.`,
@@ -98,7 +94,6 @@ export default function App() {
     e.preventDefault();
     if (!user || !db) return;
     if (numericAmount < PRODUCT_DETAILS.minInvestment) {
-      // Using backticks here safely handles the string interpolation
       alert(`Min investment is ${formatCurrency(PRODUCT_DETAILS.minInvestment)}`);
       return;
     }
@@ -192,43 +187,45 @@ export default function App() {
 
              {/* Valuation Growth Chart */}
              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col">
-                <div className="flex items-center gap-2 mb-2 text-slate-500">
+                <div className="flex items-center gap-2 mb-4 text-slate-500">
                     <TrendingUp size={14} />
                     <span className="text-[10px] font-bold uppercase tracking-widest">Valuation History (USD)</span>
                 </div>
                 
-                {/* Fixed height container for chart */}
-                <div className="flex-1 flex items-end justify-between gap-2 h-32 pt-4 relative">
-                    {/* Background Grid Line */}
-                    <div className="absolute bottom-0 w-full h-[1px] bg-slate-200"></div>
-
+                {/* Visual Chart Container */}
+                <div className="w-full flex items-end justify-between gap-2 h-24 border-b border-slate-200 pb-1 relative">
+                    
                     {/* Bar 1: 2023 */}
-                    <div className="flex flex-col items-center gap-1 w-full group relative z-10">
+                    <div className="flex flex-col items-center justify-end w-full h-full group">
                         <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '9%' }}></div>
-                        <span className="text-[9px] font-bold text-slate-500">2023</span>
                     </div>
                     
                     {/* Bar 2: 2024 */}
-                    <div className="flex flex-col items-center gap-1 w-full group relative z-10">
+                    <div className="flex flex-col items-center justify-end w-full h-full group">
                         <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '23%' }}></div>
-                        <span className="text-[9px] font-bold text-slate-500">2024</span>
                     </div>
                     
                     {/* Bar 3: 2025 */}
-                    <div className="flex flex-col items-center gap-1 w-full group relative z-10">
-                        <span className="text-[9px] font-bold text-slate-900 absolute -top-5 opacity-0 group-hover:opacity-100 transition-opacity">$800B</span>
+                    <div className="flex flex-col items-center justify-end w-full h-full group relative">
                         <div className="w-full bg-slate-800 rounded-t-sm hover:bg-slate-700 transition-colors" style={{ height: '53%' }}></div>
-                        <span className="text-[9px] font-bold text-slate-900">2025</span>
+                        <span className="absolute -top-6 text-[9px] font-bold text-slate-900">$800B</span>
                     </div>
                     
                     {/* Bar 4: IPO */}
-                    <div className="flex flex-col items-center gap-1 w-full group relative z-10">
-                         <span className="text-[9px] font-bold text-indigo-600 absolute -top-5">$1.5T</span>
+                    <div className="flex flex-col items-center justify-end w-full h-full group relative">
                         <div className="w-full bg-indigo-600 rounded-t-sm relative overflow-hidden" style={{ height: '100%' }}>
                              <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
                         </div>
-                        <span className="text-[9px] font-bold text-indigo-700">IPO '26</span>
+                        <span className="absolute -top-6 text-[9px] font-bold text-indigo-600">$1.5T</span>
                     </div>
+                </div>
+
+                {/* X-Axis Labels */}
+                <div className="flex justify-between mt-2 px-1">
+                    <span className="text-[9px] font-bold text-slate-400 w-full text-center">2023</span>
+                    <span className="text-[9px] font-bold text-slate-400 w-full text-center">2024</span>
+                    <span className="text-[9px] font-bold text-slate-900 w-full text-center">2025</span>
+                    <span className="text-[9px] font-bold text-indigo-600 w-full text-center">IPO '26</span>
                 </div>
              </div>
           </div>
