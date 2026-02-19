@@ -187,40 +187,42 @@ export default function App() {
 
              {/* Valuation Growth Chart */}
              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col">
-                <div className="flex items-center gap-2 mb-4 text-slate-500">
+                <div className="flex items-center gap-2 text-slate-500">
                     <TrendingUp size={14} />
                     <span className="text-[10px] font-bold uppercase tracking-widest">Valuation History (USD)</span>
                 </div>
                 
-                {/* Visual Chart Container */}
-                <div className="w-full flex items-end justify-between gap-2 h-24 border-b border-slate-200 pb-1 relative">
+                {/* Visual Chart Container - Added mt-8 to prevent clash with title */}
+                <div className="w-full flex items-end justify-between gap-2 h-28 mt-8 border-b border-slate-200 pb-1 relative">
                     
                     {/* Bar 1: 2023 */}
-                    <div className="flex flex-col items-center justify-end w-full h-full group">
+                    <div className="flex flex-col items-center justify-end w-full h-full group relative">
+                        <span className="absolute -top-5 text-[9px] font-bold text-slate-400">$137B</span>
                         <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '9%' }}></div>
                     </div>
                     
                     {/* Bar 2: 2024 */}
-                    <div className="flex flex-col items-center justify-end w-full h-full group">
+                    <div className="flex flex-col items-center justify-end w-full h-full group relative">
+                        <span className="absolute -top-5 text-[9px] font-bold text-slate-400">$350B</span>
                         <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '23%' }}></div>
                     </div>
                     
                     {/* Bar 3: 2025 */}
                     <div className="flex flex-col items-center justify-end w-full h-full group relative">
+                        <span className="absolute -top-5 text-[9px] font-bold text-slate-900">$800B</span>
                         <div className="w-full bg-slate-800 rounded-t-sm hover:bg-slate-700 transition-colors" style={{ height: '53%' }}></div>
-                        <span className="absolute -top-6 text-[9px] font-bold text-slate-900">$800B</span>
                     </div>
                     
                     {/* Bar 4: IPO */}
                     <div className="flex flex-col items-center justify-end w-full h-full group relative">
+                        <span className="absolute -top-5 text-[9px] font-bold text-indigo-600">$1.5T</span>
                         <div className="w-full bg-indigo-600 rounded-t-sm relative overflow-hidden" style={{ height: '100%' }}>
                              <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
                         </div>
-                        <span className="absolute -top-6 text-[9px] font-bold text-indigo-600">$1.5T</span>
                     </div>
                 </div>
 
-                {/* X-Axis Labels */}
+                {/* X-Axis Labels - Reduced bottom margin/padding implicitly by tight packing */}
                 <div className="flex justify-between mt-2 px-1">
                     <span className="text-[9px] font-bold text-slate-400 w-full text-center">2023</span>
                     <span className="text-[9px] font-bold text-slate-400 w-full text-center">2024</span>
