@@ -11,7 +11,7 @@ import {
   Calculator, TrendingUp, Rocket, Info, User, Mail,
   CheckCircle, Lock, Cpu, AlertCircle, FileText,
   BarChart3, X, ArrowRight, Zap,
-} from "lucide-react";
+} from "@/app/icons";
 
 /* ── Firebase ── */
 const firebaseConfig = {
