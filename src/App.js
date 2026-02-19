@@ -150,11 +150,11 @@ export default function App() {
           </div>
         </div>
 
-        {/* --- VISUAL FINANCIAL INTELLIGENCE SECTION --- */}
-        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-bold flex items-center gap-2 uppercase tracking-wide">
-              <BarChart3 size={22} className="text-indigo-600" /> Financial Intelligence
+        {/* --- OPTIMIZED FINANCIAL INTELLIGENCE SECTION --- */}
+        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold flex items-center gap-2 uppercase tracking-wide">
+              <BarChart3 size={20} className="text-indigo-600" /> Financial Intelligence
             </h3>
             <a 
               href="https://fintool.com/news/spacex-8-billion-profit-ipo-financials" 
@@ -166,70 +166,64 @@ export default function App() {
             </a>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
              {/* 2025 Financial Summary Table */}
-             <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+             <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-4 text-slate-500">
-                    <PieChart size={16} />
+                    <PieChart size={14} />
                     <span className="text-[10px] font-bold uppercase tracking-widest">2025 Performance</span>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3">
                     <div className="flex justify-between items-end border-b border-slate-200 pb-2">
-                        <span className="text-sm font-medium text-slate-600">Total Revenue</span>
-                        <span className="text-lg font-black text-slate-900">$15.5B</span>
+                        <span className="text-xs font-medium text-slate-600">Total Revenue</span>
+                        <span className="text-base font-black text-slate-900">$15.5B</span>
                     </div>
                     <div className="flex justify-between items-end border-b border-slate-200 pb-2">
-                        <span className="text-sm font-medium text-slate-600">EBITDA Profit</span>
-                        <span className="text-lg font-black text-emerald-600">$8.0B</span>
+                        <span className="text-xs font-medium text-slate-600">EBITDA Profit</span>
+                        <span className="text-base font-black text-emerald-600">$8.0B</span>
                     </div>
                     <div className="flex justify-between items-end border-b border-slate-200 pb-2">
-                        <span className="text-sm font-medium text-slate-600">Starlink Users</span>
-                        <span className="text-lg font-black text-indigo-600">9M+</span>
-                    </div>
-                     {/* Revenue Split Bar */}
-                    <div className="pt-2">
-                        <div className="flex justify-between text-[10px] uppercase font-bold text-slate-400 mb-1">
-                            <span>Starlink (~76%)</span>
-                            <span>Launch (~24%)</span>
-                        </div>
-                        <div className="h-3 w-full bg-slate-200 rounded-full overflow-hidden flex">
-                            <div className="h-full bg-indigo-600 w-[76%]"></div>
-                            <div className="h-full bg-slate-400 w-[24%]"></div>
-                        </div>
+                        <span className="text-xs font-medium text-slate-600">Starlink Users</span>
+                        <span className="text-base font-black text-indigo-600">9M+</span>
                     </div>
                 </div>
              </div>
 
              {/* Valuation Growth Chart */}
-             <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col">
-                <div className="flex items-center gap-2 mb-4 text-slate-500">
-                    <TrendingUp size={16} />
+             <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col">
+                <div className="flex items-center gap-2 mb-2 text-slate-500">
+                    <TrendingUp size={14} />
                     <span className="text-[10px] font-bold uppercase tracking-widest">Valuation History (USD)</span>
                 </div>
                 
-                <div className="flex-1 flex items-end justify-between gap-2 h-32 mt-2">
-                    {/* Bar 1 */}
-                    <div className="flex flex-col items-center gap-1 w-full group">
-                        <span className="text-[9px] font-bold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">$137B</span>
-                        <div className="w-full bg-slate-300 rounded-t-lg h-[9%] relative hover:bg-slate-400 transition-colors"></div>
+                {/* Fixed height container for chart */}
+                <div className="flex-1 flex items-end justify-between gap-2 h-32 pt-4 relative">
+                    {/* Background Grid Line */}
+                    <div className="absolute bottom-0 w-full h-[1px] bg-slate-200"></div>
+
+                    {/* Bar 1: 2023 ($137B / 1500 * 100 = ~9%) */}
+                    <div className="flex flex-col items-center gap-1 w-full group relative z-10">
+                        <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '9%' }}></div>
                         <span className="text-[9px] font-bold text-slate-500">2023</span>
                     </div>
-                    {/* Bar 2 */}
-                    <div className="flex flex-col items-center gap-1 w-full group">
-                        <span className="text-[9px] font-bold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">$350B</span>
-                        <div className="w-full bg-slate-300 rounded-t-lg h-[23%] hover:bg-slate-400 transition-colors"></div>
+                    
+                    {/* Bar 2: 2024 ($350B / 1500 * 100 = ~23%) */}
+                    <div className="flex flex-col items-center gap-1 w-full group relative z-10">
+                        <div className="w-full bg-slate-300 rounded-t-sm hover:bg-slate-400 transition-colors" style={{ height: '23%' }}></div>
                         <span className="text-[9px] font-bold text-slate-500">2024</span>
                     </div>
-                    {/* Bar 3 */}
-                    <div className="flex flex-col items-center gap-1 w-full group">
-                         <span className="text-[9px] font-bold text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">$800B</span>
-                        <div className="w-full bg-slate-800 rounded-t-lg h-[53%] hover:bg-slate-700 transition-colors"></div>
+                    
+                    {/* Bar 3: 2025 ($800B / 1500 * 100 = ~53%) */}
+                    <div className="flex flex-col items-center gap-1 w-full group relative z-10">
+                        <span className="text-[9px] font-bold text-slate-900 absolute -top-5 opacity-0 group-hover:opacity-100 transition-opacity">$800B</span>
+                        <div className="w-full bg-slate-800 rounded-t-sm hover:bg-slate-700 transition-colors" style={{ height: '53%' }}></div>
                         <span className="text-[9px] font-bold text-slate-900">2025</span>
                     </div>
-                    {/* Bar 4 (Projection) */}
-                    <div className="flex flex-col items-center gap-1 w-full group">
-                         <span className="text-[9px] font-bold text-indigo-600 opacity-100">$1.5T</span>
-                        <div className="w-full bg-indigo-600 rounded-t-lg h-[100%] relative overflow-hidden">
+                    
+                    {/* Bar 4: IPO ($1.5T = 100%) */}
+                    <div className="flex flex-col items-center gap-1 w-full group relative z-10">
+                         <span className="text-[9px] font-bold text-indigo-600 absolute -top-5">$1.5T</span>
+                        <div className="w-full bg-indigo-600 rounded-t-sm relative overflow-hidden" style={{ height: '100%' }}>
                              <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
                         </div>
                         <span className="text-[9px] font-bold text-indigo-700">IPO '26</span>
@@ -237,15 +231,8 @@ export default function App() {
                 </div>
              </div>
           </div>
-
-          <div className="bg-indigo-50/50 rounded-xl p-4 border border-indigo-100 text-xs text-indigo-900 leading-relaxed flex items-start gap-3">
-            <Info className="shrink-0 text-indigo-500 mt-0.5" size={16} />
-            <p>
-                <strong>Analyst Note:</strong> Starlink has officially decoupled from launch revenue, now accounting for ~$11.8B (approx 76%) of total inflows. The $1.5T IPO target assumes successful integration with xAI's orbital compute network.
-            </p>
-          </div>
         </div>
-        {/* --- END FINANCIAL INTELLIGENCE SECTION --- */}
+        {/* --- END FINANCIAL SECTION --- */}
 
         {/* Thesis Section */}
         <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-3xl p-8 shadow-xl">
@@ -299,106 +286,4 @@ export default function App() {
                 <p className="text-[10px] text-slate-400 mt-3 italic">* Disclaimer: $1.5T target is an indicative projection based on market data.</p>
               </div>
 
-              <div className="space-y-4">
-                <div className="relative">
-                  <User size={16} className="absolute left-4 top-4 text-slate-400" />
-                  <input type="text" required value={name} onChange={(e) => setName(e.target.value)} className="pl-12 w-full rounded-xl border border-slate-200 p-4 text-sm focus:border-indigo-500 outline-none" placeholder="Full Name" />
-                </div>
-                <div className="relative">
-                  <Mail size={16} className="absolute left-4 top-4 text-slate-400" />
-                  <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="pl-12 w-full rounded-xl border border-slate-200 p-4 text-sm focus:border-indigo-500 outline-none" placeholder="Email Address" />
-                </div>
-              </div>
-              
-              <button type="submit" disabled={isSubmitting} className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg hover:bg-indigo-700 active:scale-[0.98] transition-all uppercase tracking-[0.2em] text-xs">
-                {isSubmitting ? 'Transmitting...' : 'Submit Interest'}
-              </button>
-            </form>
-          ) : (
-            <div className="p-10 text-center space-y-6 animate-in zoom-in duration-300">
-              <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle size={40} />
-              </div>
-              <h3 className="text-2xl font-black text-slate-900">Success</h3>
-              <p className="text-slate-500 text-sm">Your interest has been logged. Our team will contact you with priority details.</p>
-              <button onClick={() => setSubmitted(false)} className="text-indigo-600 text-xs font-bold uppercase tracking-widest hover:underline">New Entry</button>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
-      <nav className="bg-white border-b sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-            <div className="bg-indigo-600 p-1.5 rounded-lg text-white"><TrendingUp size={20}/></div>
-            <span className="font-black text-xl uppercase tracking-tighter">Nano<span className="text-indigo-600">Frontier</span></span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className={`text-[10px] font-bold ${user ? 'text-emerald-500' : 'text-orange-400'}`}>
-            ● {user ? 'CONNECTED' : 'CONNECTING'}
-          </span>
-          <button onClick={() => setShowPasswordModal(true)} className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-indigo-600 transition-colors">
-            <Lock size={12} className="inline mr-1" /> {isAdmin ? 'Dashboard' : 'Admin'}
-          </button>
-        </div>
-      </nav>
-
-      <main className="max-w-7xl mx-auto px-6 py-12">
-        {isAdmin ? (
-          <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-            <div className="flex justify-between items-end">
-                <h2 className="text-3xl font-black uppercase tracking-tight">Demand Tracker</h2>
-                <button onClick={() => setIsAdmin(false)} className="text-xs font-bold text-slate-400 hover:text-red-500 uppercase">Exit Admin</button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-8 rounded-3xl border-2 border-slate-100">
-                <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest">Total Volume</p>
-                <h3 className="text-4xl font-black text-indigo-600 mt-2">{formatCurrency(leads.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0))}</h3>
-              </div>
-              <div className="bg-white p-8 rounded-3xl border-2 border-slate-100">
-                <p className="text-slate-400 font-bold text-[10px] uppercase tracking-widest">Interested Parties</p>
-                <h3 className="text-4xl font-black text-slate-900 mt-2">{leads.length}</h3>
-              </div>
-            </div>
-            <div className="bg-white rounded-3xl border-2 border-slate-100 overflow-hidden shadow-sm">
-              <table className="w-full text-sm text-left">
-                <thead className="bg-slate-50 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
-                  <tr><th className="p-6">Investor</th><th className="p-6 text-right">Commitment</th></tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {leads.map(l => (
-                    <tr key={l.id} className="hover:bg-slate-50"><td className="p-6 font-bold">{l.userName}</td><td className="p-6 text-right font-black text-indigo-600">{formatCurrency(l.amount)}</td></tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ) : userView}
-      </main>
-
-      {showPasswordModal && !isAdmin && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl">
-            <h3 className="font-black text-xl mb-2">Access Portal</h3>
-            <p className="text-xs text-slate-500 mb-6 font-medium">Authentication required for demand analytics.</p>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              if (passwordInput === 'spacex2026') { setIsAdmin(true); setShowPasswordModal(false); }
-              else setPasswordError(true);
-            }} className="space-y-4">
-              <input type="password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} className="w-full border-2 rounded-xl p-4 outline-none font-mono" placeholder="••••••••" autoFocus />
-              {passwordError && <p className="text-red-500 text-[10px] font-black uppercase text-center tracking-widest">Invalid Key</p>}
-              <div className="flex gap-3">
-                <button type="button" onClick={() => setShowPasswordModal(false)} className="flex-1 py-3 font-bold text-slate-400 text-sm">Cancel</button>
-                <button type="submit" className="flex-1 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm">Verify</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
+              <div className="space-y-
