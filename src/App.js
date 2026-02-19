@@ -84,7 +84,7 @@ export default function App() {
 
   const numericAmount = Number(amount) || 0;
   // Adjusted multiplier to reflect conservative 1.0T target if current is near 800B-1T
-  const projectedIpoValue = numericAmount * 1.25; 
+  const projectedIpoValue = numericAmount * 1.5; 
   const formatCurrency = (val) => new Intl.NumberFormat('en-US', { 
     style: 'currency', 
     currency: PRODUCT_DETAILS.currency,
@@ -283,13 +283,14 @@ export default function App() {
                 </p>
               </div>
 
+// 2. UI & Disclaimer Update
               <div className="bg-indigo-50/50 rounded-2xl p-5 border-2 border-dashed border-indigo-100">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] text-indigo-600 font-bold uppercase tracking-widest">Target Value</span>
                   <span className="text-2xl font-black text-indigo-700">{formatCurrency(projectedIpoValue)}</span>
                 </div>
                 <p className="text-[10px] text-slate-400 mt-3 italic">
-                   {`* Disclaimer: $1.0T target is an indicative projection based on market data.`}
+                  * Disclaimer: $1.5T target is target announced by public media sources.
                 </p>
               </div>
 
@@ -396,3 +397,4 @@ export default function App() {
     </div>
   );
 }
+
