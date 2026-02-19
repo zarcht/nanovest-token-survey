@@ -5,7 +5,7 @@ import {
   TrendingUp, Rocket, Globe, Cpu, Zap, BarChart3,
   DollarSign, Satellite, ArrowRight, ExternalLink,
   ChevronDown, ChevronUp, AlertTriangle, CheckCircle2, Star,
-} from "lucide-react";
+} from "@/app/icons";
 
 function Section({ title, icon: Icon, color = "indigo", children, defaultOpen = true }) {
   const [open, setOpen] = useState(defaultOpen);
