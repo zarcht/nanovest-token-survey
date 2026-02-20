@@ -310,29 +310,23 @@ export default function ResearchPage() {
     <div className="min-h-screen bg-slate-950 font-sans text-slate-100 pb-24">
       {/* Nav */}
       <nav className="border-b border-slate-800 sticky top-0 z-40 bg-slate-950/95 backdrop-blur px-6 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="bg-indigo-600 p-1.5 rounded-lg text-white"><TrendingUp size={20} /></div>
-          <span className="font-black text-xl uppercase tracking-tighter">
-            Nano<span className="text-indigo-400">Frontier</span>
-          </span>
+        <div className="flex items-center">
+          <img src="/logo.png" alt="Nanovest" className="h-8 w-auto" />
         </div>
         <button
           onClick={() => setShowModal(true)}
           className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest bg-indigo-600 hover:bg-indigo-500 text-white transition-colors px-4 py-2 rounded-full"
         >
-          <Rocket size={12} /> Register Interest
+          <Rocket size={12} /> Pre-Register
         </button>
       </nav>
 
       <main className="max-w-4xl mx-auto px-6 py-12">
         {/* Hero */}
         <div className="mb-12 text-center">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-indigo-600 text-white mb-5 uppercase tracking-widest">
-            Analyst Research Report · Feb 2026
-          </span>
           <h1 className="text-5xl font-black tracking-tight mb-4 leading-tight">
             SpaceX Pre-IPO<br />
-            <span className="text-indigo-400">Investment Brief</span>
+            <span className="text-indigo-400">Investment Opportunity</span>
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
             A comprehensive analysis of SpaceX&apos;s financial trajectory, IPO timeline, and the
@@ -343,7 +337,7 @@ export default function ResearchPage() {
               onClick={() => setShowModal(true)}
               className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-full transition-colors shadow-lg"
             >
-              <Rocket size={12} /> Register Interest
+              <Rocket size={12} /> Pre-Register
             </button>
             <a
               href="https://fintool.com/news/spacex-8-billion-profit-ipo-financials"
@@ -351,7 +345,7 @@ export default function ResearchPage() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest border border-slate-600 hover:border-indigo-500 text-slate-300 hover:text-white px-6 py-3 rounded-full transition-colors"
             >
-              <ExternalLink size={12} /> Full Financials on Fintool
+              <ExternalLink size={12} /> See Full Research Report
             </a>
           </div>
         </div>
