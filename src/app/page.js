@@ -259,12 +259,12 @@ function RegisterModal({ onClose }) {
                   Welcome aboard, {successData.name.split(" ")[0]}.
                 </h2>
                 <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                  Your allocation interest has been logged. Our team will reach out with priority onboarding details.
+                  Thank you for sharing your interest, our team has recorded this and will share you additional information of further development in the future.
                 </p>
               </div>
 
               <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-5 mb-5 space-y-3">
-                <p className="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Your Indicative Summary</p>
+                <p className="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Projected Return</p>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-slate-400">Nominal Investment</span>
                   <span className="text-sm font-black text-white">{fmt(successData.amount)}</span>
@@ -280,31 +280,14 @@ function RegisterModal({ onClose }) {
                 </div>
                 <div className="h-px bg-slate-700" />
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-bold text-white">Estimated IPO Value</span>
+                  <span className="text-sm font-bold text-white">Estimated Value Post IPO</span>
                   <span className="text-xl font-black text-emerald-400">{fmt(successData.amount * IPO_MULTIPLIER)}</span>
                 </div>
               </div>
 
-              <div className="bg-indigo-900/30 border border-indigo-800/50 rounded-2xl p-5 mb-6">
-                <p className="text-[10px] font-bold uppercase text-indigo-400 tracking-widest mb-3 flex items-center gap-1.5">
-                  <Zap size={10} /> Next Steps
-                </p>
-                <ul className="space-y-2">
-                  {[
-                    "Our team will contact you within 24–48 hours",
-                    "Review the research report for full due diligence",
-                    "Priority allocation confirmed upon onboarding",
-                  ].map((s) => (
-                    <li key={s} className="flex items-start gap-2 text-xs text-slate-300">
-                      <ArrowRight size={12} className="text-indigo-400 mt-0.5 flex-shrink-0" />{s}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
               <button
                 onClick={onClose}
-                className="w-full py-3 border border-slate-700 hover:border-slate-500 text-slate-400 hover:text-white rounded-2xl font-bold text-xs uppercase tracking-widest transition-colors"
+                className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-bold text-xs uppercase tracking-widest transition-colors"
               >
                 Close
               </button>
