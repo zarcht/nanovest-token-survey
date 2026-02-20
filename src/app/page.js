@@ -376,7 +376,7 @@ export default function ResearchPage() {
         {/* Key Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Stat label="IPO Target Valuation" value="$1.5T"  sub="Mid-2026 target"       accent="indigo" />
-          <Stat label="Private Valuation"    value="$800B"  sub="Dec 2025 tender offer" accent="sky"    />
+          <Stat label="Private Valuation"    value="$1T"    sub="Current offer"        accent="sky"    />
           <Stat label="2025E Revenue"        value="$15.5B" sub="~63% YoY growth"       accent="emerald"/>
           <Stat label="Starlink Subscribers" value="10M+"   sub="As of Feb 2026"        accent="amber"  />
         </div>
@@ -392,7 +392,7 @@ export default function ResearchPage() {
           </p>
           <Row label="Target IPO Date"           value="Mid-2026 (est. June 2026)" />
           <Row label="Target Raise"              value="$30B–$50B+"               />
-          <Row label="Current Private Valuation" value="~$800B (Dec 2025 tender)" />
+          <Row label="Current Private Valuation" value="~$1T (current offer)"    />
           <Row label="IPO Target Valuation"      value="$1.5 Trillion"            />
           <Row label="Listing Venue (expected)"  value="NYSE or Nasdaq (TBD)"     />
           <Row label="Implied Price / Revenue"   value="60–68× 2026E sales"       />
