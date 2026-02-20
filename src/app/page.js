@@ -113,8 +113,8 @@ function MiniLineChart({ data, max, color, gradId, filterId, labelColor }) {
   const chartH = h - padT - padB;
   const n = data.length;
   const step = chartW / (n - 1);
-  const pts = data.map((d, i) => ({
-    x: padL + i * step,
+  const pts = data.map((d, idx) => ({
+    x: padL + idx * step,
     y: padT + chartH - (d.value / max) * chartH,
     ...d,
   }));
@@ -506,8 +506,8 @@ export default function ResearchPage() {
             const chartH = h - padT - padB;
             const n = data.length;
             const step = chartW / (n - 1);
-            const points = data.map((d, i) => ({
-              x: padL + i * step,
+            const points = data.map((d, idx) => ({
+              x: padL + idx * step,
               y: padT + chartH - (d.value / max) * chartH,
               ...d,
             }));
@@ -540,8 +540,8 @@ export default function ResearchPage() {
                   <path d={areaPath} fill="url(#areaGrad)" />
                   <polyline points={polyline} fill="none" stroke="url(#lineGrad)" strokeWidth="2.5"
                     strokeLinejoin="round" strokeLinecap="round" filter="url(#glow)" />
-                  {points.map((p, i) => {
-                    const isLast = i === n - 1;
+                  {points.map((p, idx) => {
+                    const isLast = idx === n - 1;
                     const barW = step * 0.35;
                     const barH = (p.value / max) * chartH;
                     return (
@@ -551,8 +551,8 @@ export default function ResearchPage() {
                         stroke={isLast ? "#34d399" : "#6366f1"} strokeWidth="1" />
                     );
                   })}
-                  {points.map((p, i) => {
-                    const isLast = i === n - 1;
+                  {points.map((p, idx) => {
+                    const isLast = idx === n - 1;
                     return (
                       <g key={p.label}>
                         <circle cx={p.x} cy={p.y} r="6" fill={isLast ? "rgba(52,211,153,0.2)" : "rgba(99,102,241,0.2)"} />
