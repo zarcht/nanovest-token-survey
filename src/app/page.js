@@ -97,6 +97,56 @@ function Bear({ children }) {
   );
 }
 
+/* ── Reusable Mini Line Chart ── */
+function MiniLineChart({ data, max, color, gradId, filterId, labelColor }) {
+  const w = 260; const h = 200;
+  const padL = 10; const padR = 10; const padT = 40; const padB = 24;
+  const chartW = w - padL - padR;
+  const chartH = h - padT - padB;
+  const n = data.length;
+  const step = chartW / (n - 1);
+  const pts = data.map((d, i) => ({
+    x: padL + i * step,
+    y: padT + chartH - (d.value / max) * chartH,
+    ...d,
+  }));
+  const polyline = pts.map(p => `${p.x},${p.y}`).join(" ");
+  const area = `M${pts[0].x},${padT + chartH} ` + pts.map(p => `L${p.x},${p.y}`).join(" ") + ` L${pts[n-1].x},${padT + chartH} Z`;
+
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full">
+      <defs>
+        <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.4" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.02" />
+        </linearGradient>
+        <filter id={filterId}>
+          <feGaussianBlur stdDeviation="2.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      {[0.33, 0.66, 1].map(t => (
+        <line key={t} x1={padL} y1={padT + chartH - t * chartH} x2={w - padR} y2={padT + chartH - t * chartH}
+          stroke="#1e293b" strokeWidth="1" strokeDasharray="3 3" />
+      ))}
+      <path d={area} fill={`url(#${gradId})`} />
+      <polyline points={polyline} fill="none" stroke={color} strokeWidth="2.5"
+        strokeLinejoin="round" strokeLinecap="round" filter={`url(#${filterId})`} />
+      {pts.map((p) => (
+        <g key={p.label}>
+          <circle cx={p.x} cy={p.y} r="5" fill={color} fillOpacity="0.2" />
+          <circle cx={p.x} cy={p.y} r="3" fill={color} />
+          {/* Two separate tspans ensure the B always renders */}
+          <text x={p.x} y={p.y - 10} textAnchor="middle" fontSize="9" fontWeight="800" fill={labelColor}>
+            ${p.value}B
+          </text>
+          <text x={p.x} y={h - 5} textAnchor="middle" fontSize="8" fill="#64748b">{p.label}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 /* ── Register Interest Modal ── */
 function RegisterModal({ onClose }) {
   const [user, setUser] = useState(null);
@@ -155,7 +205,6 @@ function RegisterModal({ onClose }) {
         <div className="relative p-8">
           {!successData ? (
             <>
-              {/* Form Header */}
               <div className="mb-6">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-indigo-600 text-white mb-3 uppercase tracking-widest">
                   Priority Series I
@@ -165,7 +214,6 @@ function RegisterModal({ onClose }) {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Amount */}
                 <div className="space-y-2">
                   <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                     Indicative Nominal (USD)
@@ -173,11 +221,7 @@ function RegisterModal({ onClose }) {
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 font-bold pointer-events-none">$</span>
                     <input
-                      type="number"
-                      required
-                      min={MIN_INVESTMENT}
-                      step="1"
-                      value={amount}
+                      type="number" required min={MIN_INVESTMENT} step="1" value={amount}
                       onChange={(e) => setAmount(e.target.value)}
                       className="pl-8 w-full rounded-2xl bg-slate-800/80 border border-slate-600 text-white p-4 text-2xl font-black focus:border-indigo-500 outline-none transition-all placeholder-slate-600"
                       placeholder="5000"
@@ -188,7 +232,6 @@ function RegisterModal({ onClose }) {
                   </p>
                 </div>
 
-                {/* IPO Value preview */}
                 <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-4 space-y-2">
                   <div className="flex justify-between items-center">
                     <span className="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">Estimated IPO Value</span>
@@ -208,31 +251,26 @@ function RegisterModal({ onClose }) {
                   <p className="text-[10px] text-slate-600 italic">* Indicative only. Not financial advice.</p>
                 </div>
 
-                {/* Name */}
                 <div className="relative">
                   <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                   <input
-                    type="text" required value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    type="text" required value={name} onChange={(e) => setName(e.target.value)}
                     className="pl-12 w-full rounded-xl bg-slate-800/80 border border-slate-600 text-white p-4 text-sm focus:border-indigo-500 outline-none transition-all placeholder-slate-500"
                     placeholder="Full Name"
                   />
                 </div>
 
-                {/* Email */}
                 <div className="relative">
                   <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                   <input
-                    type="email" required value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
                     className="pl-12 w-full rounded-xl bg-slate-800/80 border border-slate-600 text-white p-4 text-sm focus:border-indigo-500 outline-none transition-all placeholder-slate-500"
                     placeholder="Email Address"
                   />
                 </div>
 
                 <button
-                  type="submit"
-                  disabled={isSubmitting || !user}
+                  type="submit" disabled={isSubmitting || !user}
                   className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-bold shadow-lg active:scale-[0.98] transition-all uppercase tracking-[0.2em] text-xs disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "Submitting..." : "Submit Interest"}
@@ -244,7 +282,6 @@ function RegisterModal({ onClose }) {
               </form>
             </>
           ) : (
-            /* Success State */
             <>
               <div className="flex justify-center mb-6">
                 <div className="w-20 h-20 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
@@ -306,6 +343,9 @@ function RegisterModal({ onClose }) {
 export default function ResearchPage() {
   const [showModal, setShowModal] = useState(false);
 
+  const revenueData  = [{ label: "2023", value: 8.7 }, { label: "2024", value: 13.7 }, { label: "2025E", value: 15.5 }];
+  const starlinkData = [{ label: "2023", value: 4.2 }, { label: "2024", value: 8.2  }, { label: "2025E", value: 10   }];
+
   return (
     <div className="min-h-screen bg-slate-950 font-sans text-slate-100 pb-24">
       {/* Nav */}
@@ -344,8 +384,7 @@ export default function ResearchPage() {
             </button>
             <a
               href="https://fintool.com/news/spacex-8-billion-profit-ipo-financials"
-              target="_blank"
-              rel="noopener noreferrer"
+              target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-full transition-colors shadow-lg"
             >
               <ExternalLink size={12} /> See Full Research Report
@@ -355,10 +394,10 @@ export default function ResearchPage() {
 
         {/* Key Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Stat label="IPO Target Valuation" value="$1.5T"  sub="Mid-2026 target"       accent="indigo" />
-          <Stat label="Private Valuation"    value="$1T"    sub="Current offer"        accent="sky"    />
-          <Stat label="2025E Revenue"        value="$15.5B" sub="~63% YoY growth"       accent="emerald"/>
-          <Stat label="Starlink Subscribers" value="10M+"   sub="As of Feb 2026"        accent="amber"  />
+          <Stat label="IPO Target Valuation" value="$1.5T"  sub="Mid-2026 target"  accent="indigo" />
+          <Stat label="Private Valuation"    value="$1T"    sub="Current offer"    accent="sky"    />
+          <Stat label="2025E Revenue"        value="$15.5B" sub="~63% YoY growth"  accent="emerald"/>
+          <Stat label="Starlink Subscribers" value="10M+"   sub="As of Feb 2026"   accent="amber"  />
         </div>
 
         {/* IPO Overview */}
@@ -385,107 +424,32 @@ export default function ResearchPage() {
             <span className="text-white font-bold">diversified operator with scalable recurring revenue</span>.
             Starlink now accounts for the majority of revenue and is the primary earnings driver heading into the IPO.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
-            {/* Revenue Chart */}
-            {(() => {
-              const revenue = [
-                { label: "2023", value: 8.7 },
-                { label: "2024", value: 13.7 },
-                { label: "2025E", value: 15.5 },
-              ];
-              const max = 20;
-              const w = 260; const h = 180;
-              const padL = 8; const padR = 8; const padT = 32; const padB = 24;
-              const chartW = w - padL - padR;
-              const chartH = h - padT - padB;
-              const n = revenue.length;
-              const step = chartW / (n - 1);
-              const pts = revenue.map((d, i) => ({
-                x: padL + i * step,
-                y: padT + chartH - (d.value / max) * chartH,
-                ...d,
-              }));
-              const polyline = pts.map(p => `${p.x},${p.y}`).join(" ");
-              const area = `M${pts[0].x},${padT + chartH} ` + pts.map(p => `L${p.x},${p.y}`).join(" ") + ` L${pts[n-1].x},${padT + chartH} Z`;
-              return (
-                <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
-                  <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-3">Total Revenue</p>
-                  <svg viewBox={`0 0 ${w} ${h}`} className="w-full">
-                    <defs>
-                      <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
-                        <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
-                      </linearGradient>
-                      <filter id="glow2"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                    </defs>
-                    {[0.33, 0.66, 1].map(t => (
-                      <line key={t} x1={padL} y1={padT + chartH - t * chartH} x2={w - padR} y2={padT + chartH - t * chartH} stroke="#1e293b" strokeWidth="1" strokeDasharray="3 3" />
-                    ))}
-                    <path d={area} fill="url(#revGrad)" />
-                    <polyline points={polyline} fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" filter="url(#glow2)" />
-                    {pts.map((p, i) => (
-                      <g key={p.label}>
-                        <circle cx={p.x} cy={p.y} r="5" fill="rgba(16,185,129,0.2)" />
-                        <circle cx={p.x} cy={p.y} r="3" fill="#10b981" />
-                        <text x={p.x} y={p.y - 9} textAnchor="middle" fontSize="9" fontWeight="800" fill="#34d399">${p.value}B</text>
-                        <text x={p.x} y={h - 5} textAnchor="middle" fontSize="8" fill="#64748b">{p.label}</text>
-                      </g>
-                    ))}
-                  </svg>
-                </div>
-              );
-            })()}
 
-            {/* Starlink Revenue Chart */}
-            {(() => {
-              const starlink = [
-                { label: "2023", value: 4.2 },
-                { label: "2024", value: 8.2 },
-                { label: "2025E", value: 10 },
-              ];
-              const max = 14;
-              const w = 260; const h = 180;
-              const padL = 8; const padR = 8; const padT = 32; const padB = 24;
-              const chartW = w - padL - padR;
-              const chartH = h - padT - padB;
-              const n = starlink.length;
-              const step = chartW / (n - 1);
-              const pts = starlink.map((d, i) => ({
-                x: padL + i * step,
-                y: padT + chartH - (d.value / max) * chartH,
-                ...d,
-              }));
-              const polyline = pts.map(p => `${p.x},${p.y}`).join(" ");
-              const area = `M${pts[0].x},${padT + chartH} ` + pts.map(p => `L${p.x},${p.y}`).join(" ") + ` L${pts[n-1].x},${padT + chartH} Z`;
-              return (
-                <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
-                  <p className="text-xs text-sky-400 font-bold uppercase tracking-widest mb-3">Starlink Revenue</p>
-                  <svg viewBox={`0 0 ${w} ${h}`} className="w-full">
-                    <defs>
-                      <linearGradient id="slGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.4" />
-                        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.02" />
-                      </linearGradient>
-                      <filter id="glow3"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                    </defs>
-                    {[0.33, 0.66, 1].map(t => (
-                      <line key={t} x1={padL} y1={padT + chartH - t * chartH} x2={w - padR} y2={padT + chartH - t * chartH} stroke="#1e293b" strokeWidth="1" strokeDasharray="3 3" />
-                    ))}
-                    <path d={area} fill="url(#slGrad)" />
-                    <polyline points={polyline} fill="none" stroke="#38bdf8" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" filter="url(#glow3)" />
-                    {pts.map((p, i) => (
-                      <g key={p.label}>
-                        <circle cx={p.x} cy={p.y} r="5" fill="rgba(56,189,248,0.2)" />
-                        <circle cx={p.x} cy={p.y} r="3" fill="#38bdf8" />
-                        <text x={p.x} y={p.y - 9} textAnchor="middle" fontSize="9" fontWeight="800" fill="#7dd3fc">${p.value}B</text>
-                        <text x={p.x} y={h - 5} textAnchor="middle" fontSize="8" fill="#64748b">{p.label}</text>
-                      </g>
-                    ))}
-                  </svg>
-                </div>
-              );
-            })()}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+            <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+              <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-3">Total Revenue</p>
+              <MiniLineChart
+                data={revenueData}
+                max={20}
+                color="#10b981"
+                gradId="revGrad"
+                filterId="revGlow"
+                labelColor="#34d399"
+              />
+            </div>
+            <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+              <p className="text-xs text-sky-400 font-bold uppercase tracking-widest mb-3">Starlink Revenue</p>
+              <MiniLineChart
+                data={starlinkData}
+                max={14}
+                color="#38bdf8"
+                gradId="slGrad"
+                filterId="slGlow"
+                labelColor="#7dd3fc"
+              />
+            </div>
           </div>
+
           <div className="bg-emerald-900/20 border border-emerald-800/50 rounded-xl p-4 mb-4">
             <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-1 flex items-center gap-1">
               <Star size={10} /> Profitability Milestone
@@ -511,34 +475,27 @@ export default function ResearchPage() {
             <span className="text-white font-bold">vertically integrated platform owning the &quot;physical internet&quot; of space</span>.
           </p>
 
-          {/* Chart */}
           {(() => {
             const data = [
-              { label: "Jan '23", value: 137,  display: "$137B" },
-              { label: "Jun '24", value: 210,  display: "$210B" },
-              { label: "Dec '24", value: 350,  display: "$350B" },
-              { label: "Jul '25", value: 400,  display: "$400B" },
-              { label: "Dec '25", value: 800,  display: "$800B" },
-              { label: "IPO '26", value: 1500, display: "$1.5T" },
+              { label: "Jan '23", value: 137,  display: "$137B"  },
+              { label: "Jun '24", value: 210,  display: "$210B"  },
+              { label: "Dec '24", value: 350,  display: "$350B"  },
+              { label: "Jul '25", value: 400,  display: "$400B"  },
+              { label: "Dec '25", value: 800,  display: "$800B"  },
+              { label: "IPO '26", value: 1500, display: "$1.5T"  },
             ];
             const max = 1500;
-            const w = 560;
-            const h = 220;
-            const padL = 10;
-            const padR = 10;
-            const padT = 36;
-            const padB = 28;
+            const w = 560; const h = 220;
+            const padL = 10; const padR = 10; const padT = 36; const padB = 28;
             const chartW = w - padL - padR;
             const chartH = h - padT - padB;
             const n = data.length;
             const step = chartW / (n - 1);
-
             const points = data.map((d, i) => ({
               x: padL + i * step,
               y: padT + chartH - (d.value / max) * chartH,
               ...d,
             }));
-
             const polyline = points.map(p => `${p.x},${p.y}`).join(" ");
             const areaPath = `M${points[0].x},${padT + chartH} ` +
               points.map(p => `L${p.x},${p.y}`).join(" ") +
@@ -561,86 +518,37 @@ export default function ResearchPage() {
                       <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                     </filter>
                   </defs>
-
-                  {/* Grid lines */}
                   {[0.25, 0.5, 0.75, 1].map(t => (
-                    <line
-                      key={t}
-                      x1={padL} y1={padT + chartH - t * chartH}
-                      x2={w - padR} y2={padT + chartH - t * chartH}
-                      stroke="#334155" strokeWidth="0.5" strokeDasharray="4 4"
-                    />
+                    <line key={t} x1={padL} y1={padT + chartH - t * chartH} x2={w - padR} y2={padT + chartH - t * chartH}
+                      stroke="#334155" strokeWidth="0.5" strokeDasharray="4 4" />
                   ))}
-
-                  {/* Area fill */}
                   <path d={areaPath} fill="url(#areaGrad)" />
-
-                  {/* Line */}
-                  <polyline
-                    points={polyline}
-                    fill="none"
-                    stroke="url(#lineGrad)"
-                    strokeWidth="2.5"
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    filter="url(#glow)"
-                  />
-
-                  {/* Bars */}
+                  <polyline points={polyline} fill="none" stroke="url(#lineGrad)" strokeWidth="2.5"
+                    strokeLinejoin="round" strokeLinecap="round" filter="url(#glow)" />
                   {points.map((p, i) => {
                     const isLast = i === n - 1;
                     const barW = step * 0.35;
                     const barH = (p.value / max) * chartH;
                     return (
-                      <rect
-                        key={p.label}
-                        x={p.x - barW / 2}
-                        y={padT + chartH - barH}
-                        width={barW}
-                        height={barH}
-                        rx="3"
+                      <rect key={p.label} x={p.x - barW / 2} y={padT + chartH - barH}
+                        width={barW} height={barH} rx="3"
                         fill={isLast ? "rgba(52,211,153,0.25)" : "rgba(99,102,241,0.25)"}
-                        stroke={isLast ? "#34d399" : "#6366f1"}
-                        strokeWidth="1"
-                      />
+                        stroke={isLast ? "#34d399" : "#6366f1"} strokeWidth="1" />
                     );
                   })}
-
-                  {/* Dots + labels */}
                   {points.map((p, i) => {
                     const isLast = i === n - 1;
                     return (
                       <g key={p.label}>
-                        {/* Dot glow */}
                         <circle cx={p.x} cy={p.y} r="6" fill={isLast ? "rgba(52,211,153,0.2)" : "rgba(99,102,241,0.2)"} />
                         <circle cx={p.x} cy={p.y} r="3.5" fill={isLast ? "#34d399" : "#818cf8"} />
-                        {/* Value label */}
-                        <text
-                          x={p.x}
-                          y={p.y - 10}
-                          textAnchor="middle"
-                          fontSize="9"
-                          fontWeight="800"
-                          fill={isLast ? "#34d399" : "#a5b4fc"}
-                        >
-                          {p.display}
-                        </text>
-                        {/* X label */}
-                        <text
-                          x={p.x}
-                          y={h - 6}
-                          textAnchor="middle"
-                          fontSize="8"
-                          fill="#64748b"
-                        >
-                          {p.label}
-                        </text>
+                        <text x={p.x} y={p.y - 10} textAnchor="middle" fontSize="9" fontWeight="800"
+                          fill={isLast ? "#34d399" : "#a5b4fc"}>{p.display}</text>
+                        <text x={p.x} y={h - 6} textAnchor="middle" fontSize="8" fill="#64748b">{p.label}</text>
                       </g>
                     );
                   })}
                 </svg>
-
-                {/* Legend */}
                 <div className="flex items-center gap-4 mt-2">
                   <div className="flex items-center gap-1.5">
                     <div className="w-3 h-3 rounded-sm bg-indigo-500/40 border border-indigo-500" />
@@ -729,7 +637,6 @@ export default function ResearchPage() {
         </p>
       </main>
 
-      {/* Register Interest Modal */}
       {showModal && <RegisterModal onClose={() => setShowModal(false)} />}
     </div>
   );
