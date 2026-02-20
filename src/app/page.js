@@ -137,7 +137,14 @@ function MiniLineChart({ data, max, color, gradId, filterId, labelColor }) {
           <circle cx={p.x} cy={p.y} r="5" fill={color} fillOpacity="0.2" />
           <circle cx={p.x} cy={p.y} r="3" fill={color} />
           {/* Two separate tspans ensure the B always renders */}
-          <text x={p.x} y={p.y - 10} textAnchor="middle" fontSize="9" fontWeight="800" fill={labelColor}>
+          <text
+            x={p.x}
+            y={p.y - 10}
+            textAnchor={i === n - 1 ? "end" : "middle"}
+            fontSize="9"
+            fontWeight="800"
+            fill={labelColor}
+          >
             ${p.value}B
           </text>
           <text x={p.x} y={h - 5} textAnchor="middle" fontSize="8" fill="#64748b">{p.label}</text>
