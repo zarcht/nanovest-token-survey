@@ -354,6 +354,92 @@ function RegisterModal({ onClose }) {
   );
 }
 
+/* ── Valuation Chart ── */
+function ValuationChart() {
+  const w = 560; const h = 220;
+  const padL = 10; const padR = 10; const padT = 36; const padB = 28;
+  const chartW = w - padL - padR;
+  const chartH = h - padT - padB;
+  const max = 1500;
+
+  const raw = [
+    { label: "Jan '23", value: 137,  display: "$137B",  isLast: false },
+    { label: "Jun '24", value: 210,  display: "$210B",  isLast: false },
+    { label: "Dec '24", value: 350,  display: "$350B",  isLast: false },
+    { label: "Jul '25", value: 400,  display: "$400B",  isLast: false },
+    { label: "Dec '25", value: 800,  display: "$800B",  isLast: false },
+    { label: "IPO '26", value: 1500, display: "$1.5T",  isLast: true  },
+  ];
+  const n = raw.length;
+  const step = chartW / (n - 1);
+  const p0 = { ...raw[0], x: padL + 0 * step, y: padT + chartH - (raw[0].value / max) * chartH };
+  const p1 = { ...raw[1], x: padL + 1 * step, y: padT + chartH - (raw[1].value / max) * chartH };
+  const p2 = { ...raw[2], x: padL + 2 * step, y: padT + chartH - (raw[2].value / max) * chartH };
+  const p3 = { ...raw[3], x: padL + 3 * step, y: padT + chartH - (raw[3].value / max) * chartH };
+  const p4 = { ...raw[4], x: padL + 4 * step, y: padT + chartH - (raw[4].value / max) * chartH };
+  const p5 = { ...raw[5], x: padL + 5 * step, y: padT + chartH - (raw[5].value / max) * chartH };
+  const pts = [p0, p1, p2, p3, p4, p5];
+
+  const polyline = pts.map(p => `${p.x},${p.y}`).join(" ");
+  const areaPath = `M${p0.x},${padT + chartH} L${p0.x},${p0.y} L${p1.x},${p1.y} L${p2.x},${p2.y} L${p3.x},${p3.y} L${p4.x},${p4.y} L${p5.x},${p5.y} L${p5.x},${padT + chartH} Z`;
+  const barW = step * 0.35;
+
+  function barH(p) { return (p.value / max) * chartH; }
+  function dot(p) { return p.isLast ? "rgba(52,211,153,0.2)" : "rgba(99,102,241,0.2)"; }
+  function dotFill(p) { return p.isLast ? "#34d399" : "#818cf8"; }
+  function barFill(p) { return p.isLast ? "rgba(52,211,153,0.25)" : "rgba(99,102,241,0.25)"; }
+  function barStroke(p) { return p.isLast ? "#34d399" : "#6366f1"; }
+  function lblFill(p) { return p.isLast ? "#34d399" : "#a5b4fc"; }
+
+  return (
+    <div className="w-full overflow-x-auto mb-6">
+      <svg viewBox={`0 0 ${w} ${h}`} className="w-full" style={{ minWidth: 320 }}>
+        <defs>
+          <linearGradient id="valAreaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#6366f1" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#6366f1" stopOpacity="0.02" />
+          </linearGradient>
+          <linearGradient id="valLineGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#818cf8" />
+            <stop offset="100%" stopColor="#34d399" />
+          </linearGradient>
+          <filter id="valGlow">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+        <line x1={padL} y1={padT + chartH - 0.25 * chartH} x2={w - padR} y2={padT + chartH - 0.25 * chartH} stroke="#334155" strokeWidth="0.5" strokeDasharray="4 4" />
+        <line x1={padL} y1={padT + chartH - 0.50 * chartH} x2={w - padR} y2={padT + chartH - 0.50 * chartH} stroke="#334155" strokeWidth="0.5" strokeDasharray="4 4" />
+        <line x1={padL} y1={padT + chartH - 0.75 * chartH} x2={w - padR} y2={padT + chartH - 0.75 * chartH} stroke="#334155" strokeWidth="0.5" strokeDasharray="4 4" />
+        <line x1={padL} y1={padT + chartH - 1.00 * chartH} x2={w - padR} y2={padT + chartH - 1.00 * chartH} stroke="#334155" strokeWidth="0.5" strokeDasharray="4 4" />
+        <path d={areaPath} fill="url(#valAreaGrad)" />
+        <polyline points={polyline} fill="none" stroke="url(#valLineGrad)" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" filter="url(#valGlow)" />
+        {pts.map(p => (
+          <rect key={`bar-${p.label}`} x={p.x - barW / 2} y={padT + chartH - barH(p)} width={barW} height={barH(p)} rx="3" fill={barFill(p)} stroke={barStroke(p)} strokeWidth="1" />
+        ))}
+        {pts.map(p => (
+          <g key={`pt-${p.label}`}>
+            <circle cx={p.x} cy={p.y} r="6" fill={dot(p)} />
+            <circle cx={p.x} cy={p.y} r="3.5" fill={dotFill(p)} />
+            <text x={p.x} y={p.y - 10} textAnchor={p.isLast ? "end" : "middle"} fontSize="9" fontWeight="800" fill={lblFill(p)}>{p.display}</text>
+            <text x={p.x} y={h - 6} textAnchor={p.isLast ? "end" : "middle"} fontSize="8" fill="#64748b">{p.label}</text>
+          </g>
+        ))}
+      </svg>
+      <div className="flex items-center gap-4 mt-2">
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-sm bg-indigo-500/40 border border-indigo-500" />
+          <span className="text-[10px] text-slate-400">Historical Rounds</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-sm bg-emerald-500/30 border border-emerald-400" />
+          <span className="text-[10px] text-slate-400">IPO Target</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Main Page ── */
 export default function ResearchPage() {
   const [showModal, setShowModal] = useState(false);
