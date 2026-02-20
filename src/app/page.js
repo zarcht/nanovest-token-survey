@@ -38,7 +38,7 @@ const fmt = (v) =>
   }).format(v);
 
 /* ── Section Component ── */
-function Section({ title, icon: Icon, color = "indigo", children, defaultOpen = true }) {
+function Section({ title, icon: Icon, color = "indigo", children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
   const styles = {
     indigo: { border: "border-indigo-800", bg: "bg-indigo-900/30", text: "text-indigo-400" },
@@ -343,7 +343,7 @@ export default function ResearchPage() {
               href="https://fintool.com/news/spacex-8-billion-profit-ipo-financials"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest border border-slate-600 hover:border-indigo-500 text-slate-300 hover:text-white px-6 py-3 rounded-full transition-colors"
+              className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-full transition-colors shadow-lg"
             >
               <ExternalLink size={12} /> See Full Research Report
             </a>
@@ -367,12 +367,8 @@ export default function ResearchPage() {
             would target a raise of <span className="text-indigo-400 font-bold">$30–50 billion</span> —
             the largest IPO in history, surpassing Saudi Aramco&apos;s 2019 record.
           </p>
-          <Row label="Target IPO Date"           value="Mid-2026 (est. June 2026)" />
-          <Row label="Target Raise"              value="$30B–$50B+"               />
-          <Row label="Current Private Valuation" value="~$1T (current offer)"    />
-          <Row label="IPO Target Valuation"      value="$1.5 Trillion"            />
-          <Row label="Listing Venue (expected)"  value="NYSE or Nasdaq (TBD)"     />
-          <Row label="Implied Price / Revenue"   value="60–68× 2026E sales"       />
+          <Row label="Target IPO Date"      value="Mid-2026 (est. June 2026)" />
+          <Row label="IPO Target Valuation" value="$1.5 Trillion"             />
           <p className="text-xs text-slate-500 italic mt-4">
             Source: Bloomberg, Financial Times, Fortune — Dec 2025 / Jan 2026. Indicative only.
           </p>
@@ -417,27 +413,6 @@ export default function ResearchPage() {
           >
             <ExternalLink size={11} /> Deep-Dive: $8B Profit Analysis on Fintool
           </a>
-        </Section>
-
-        {/* Segments */}
-        <Section title="Business Segments" icon={Satellite} color="sky">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { icon: Globe, color: "text-sky-400", title: "Starlink", value: "$8.2B+", sub: "2024 Revenue · 58% of Total", desc: "Over 9,422 active LEO satellites. 10M+ subscribers in 150+ countries. Expanding into aviation, maritime, government, and direct-to-cell." },
-              { icon: Rocket, color: "text-indigo-400", title: "Launch Services", value: "$4.2B+", sub: "2024 Revenue · 42% of Total", desc: "Falcon 9 commands 85%+ of global orbital launch mass. 160+ launches in 2025. Single boosters reused up to 32×." },
-              { icon: Cpu, color: "text-violet-400", title: "AI & Space Compute", value: "Nascent", sub: "Est. $40–100B+ by 2026 (bull)", desc: "Solar-powered orbital AI data centers. D2C satellite phones. xAI integration. $100–200B upside by 2027 in bull scenarios." },
-            ].map(({ icon: Icon, color, title, value, sub, desc }) => (
-              <div key={title} className="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
-                <div className="flex items-center gap-2 mb-3">
-                  <Icon size={16} className={color} />
-                  <span className={`text-xs font-black uppercase tracking-widest ${color}`}>{title}</span>
-                </div>
-                <p className="text-xl font-black text-white mb-1">{value}</p>
-                <p className="text-xs text-slate-400 mb-3">{sub}</p>
-                <p className="text-xs text-slate-400 leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
         </Section>
 
         {/* Valuation */}
@@ -490,28 +465,6 @@ export default function ResearchPage() {
                 <Bear>Geopolitical risks could disrupt global Starlink rollout</Bear>
               </ul>
             </div>
-          </div>
-        </Section>
-
-        {/* Moat */}
-        <Section title="Competitive Moat" icon={Zap} color="sky">
-          <p className="text-slate-300 text-sm leading-relaxed mb-5">
-            SpaceX&apos;s dominance is self-reinforcing. No rival has replicated its vertical integration at scale.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {[
-              ["85%+", "Global orbital launch share"],
-              ["500+", "Successful booster landings"],
-              ["32×",  "Max reuses of single Falcon 9"],
-              ["9,422","Active Starlink satellites (Jan 2026)"],
-              ["150+", "Countries with Starlink access"],
-              ["$125M","Falcon Heavy vs rivals at $300M+"],
-            ].map(([v, l]) => (
-              <div key={l} className="bg-slate-800/50 rounded-xl p-4 border border-slate-700 text-center">
-                <p className="text-xl font-black text-sky-400">{v}</p>
-                <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wide">{l}</p>
-              </div>
-            ))}
           </div>
         </Section>
 
