@@ -324,6 +324,9 @@ export default function ResearchPage() {
       <main className="max-w-4xl mx-auto px-6 py-12">
         {/* Hero */}
         <div className="mb-12 text-center">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-indigo-600 text-white mb-5 uppercase tracking-widest">
+            Nanovest Tokenization
+          </span>
           <h1 className="text-5xl font-black tracking-tight mb-4 leading-tight">
             SpaceX Pre-IPO<br />
             <span className="text-indigo-400">Investment Opportunity</span>
@@ -369,6 +372,7 @@ export default function ResearchPage() {
           </p>
           <Row label="Target IPO Date"      value="Mid-2026 (est. June 2026)" />
           <Row label="IPO Target Valuation" value="$1.5 Trillion"             />
+          <Row label="Target Raise"         value="$30B–$50B+"               />
           <p className="text-xs text-slate-500 italic mt-4">
             Source: Bloomberg, Financial Times, Fortune — Dec 2025 / Jan 2026. Indicative only.
           </p>
@@ -417,17 +421,59 @@ export default function ResearchPage() {
 
         {/* Valuation */}
         <Section title="Valuation History" icon={BarChart3} color="amber">
-          <p className="text-slate-300 text-sm leading-relaxed mb-5">
+          <p className="text-slate-300 text-sm leading-relaxed mb-6">
             SpaceX&apos;s valuation has grown ~6× in under three years, priced as a{" "}
             <span className="text-white font-bold">vertically integrated platform owning the &quot;physical internet&quot; of space</span>.
           </p>
-          <Row label="Jan 2023 — Primary round" value="$137B"  />
-          <Row label="Jun 2024 — Secondary"     value="$210B"  />
-          <Row label="Dec 2024 — Secondary"     value="$350B"  />
-          <Row label="Jul 2025 — Tender offer"  value="$400B"  />
-          <Row label="Dec 2025 — Tender offer"  value="~$800B" />
-          <Row label="2026 IPO Target"          value="$1.5T"  />
-          <div className="bg-amber-900/20 border border-amber-800/50 rounded-xl p-4 mt-5">
+
+          {/* Chart */}
+          {(() => {
+            const data = [
+              { label: "Jan '23", value: 137 },
+              { label: "Jun '24", value: 210 },
+              { label: "Dec '24", value: 350 },
+              { label: "Jul '25", value: 400 },
+              { label: "Dec '25", value: 800 },
+              { label: "IPO '26", value: 1500 },
+            ];
+            const max = 1500;
+            return (
+              <div className="mb-6">
+                <div className="flex items-end gap-3 h-48">
+                  {data.map(({ label, value }, i) => {
+                    const isLast = i === data.length - 1;
+                    const pct = (value / max) * 100;
+                    return (
+                      <div key={label} className="flex-1 flex flex-col items-center gap-1">
+                        <span className={`text-[10px] font-black ${isLast ? "text-emerald-400" : "text-indigo-400"}`}>
+                          ${value >= 1000 ? `${value / 1000}T` : `${value}B`}
+                        </span>
+                        <div className="w-full flex items-end" style={{ height: "160px" }}>
+                          <div
+                            className={`w-full rounded-t-lg transition-all ${isLast ? "bg-emerald-500/80" : "bg-indigo-600/70"}`}
+                            style={{ height: `${pct}%` }}
+                          />
+                        </div>
+                        <span className="text-[9px] text-slate-500 uppercase tracking-wide text-center">{label}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-4 flex items-center gap-4">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-sm bg-indigo-600/70" />
+                    <span className="text-[10px] text-slate-400">Historical</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-sm bg-emerald-500/80" />
+                    <span className="text-[10px] text-slate-400">IPO Target</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          <div className="bg-amber-900/20 border border-amber-800/50 rounded-xl p-4">
             <p className="text-xs text-amber-400 font-bold uppercase tracking-widest mb-2">Valuation Context</p>
             <p className="text-sm text-slate-300">
               At $1.5T that&apos;s 60–68× 2026E revenue vs. 1.5–3× for legacy aerospace peers.
