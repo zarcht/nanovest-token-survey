@@ -145,7 +145,7 @@ function MiniLineChart({ data, max, color, gradId, filterId, labelColor }) {
             fontWeight="800"
             fill={labelColor}
           >
-            ${p.value}B
+            {`${p.value}B`}
           </text>
           <text x={p.x} y={h - 5} textAnchor="middle" fontSize="8" fill="#64748b">{p.label}</text>
         </g>
