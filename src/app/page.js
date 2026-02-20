@@ -429,43 +429,140 @@ export default function ResearchPage() {
           {/* Chart */}
           {(() => {
             const data = [
-              { label: "Jan '23", value: 137 },
-              { label: "Jun '24", value: 210 },
-              { label: "Dec '24", value: 350 },
-              { label: "Jul '25", value: 400 },
-              { label: "Dec '25", value: 800 },
-              { label: "IPO '26", value: 1500 },
+              { label: "Jan '23", value: 137,  display: "$137B" },
+              { label: "Jun '24", value: 210,  display: "$210B" },
+              { label: "Dec '24", value: 350,  display: "$350B" },
+              { label: "Jul '25", value: 400,  display: "$400B" },
+              { label: "Dec '25", value: 800,  display: "$800B" },
+              { label: "IPO '26", value: 1500, display: "$1.5T" },
             ];
             const max = 1500;
+            const w = 560;
+            const h = 220;
+            const padL = 10;
+            const padR = 10;
+            const padT = 36;
+            const padB = 28;
+            const chartW = w - padL - padR;
+            const chartH = h - padT - padB;
+            const n = data.length;
+            const step = chartW / (n - 1);
+
+            const points = data.map((d, i) => ({
+              x: padL + i * step,
+              y: padT + chartH - (d.value / max) * chartH,
+              ...d,
+            }));
+
+            const polyline = points.map(p => `${p.x},${p.y}`).join(" ");
+            const areaPath = `M${points[0].x},${padT + chartH} ` +
+              points.map(p => `L${p.x},${p.y}`).join(" ") +
+              ` L${points[n-1].x},${padT + chartH} Z`;
+
             return (
-              <div className="mb-6">
-                <div className="flex items-end gap-3 h-48">
-                  {data.map(({ label, value }, i) => {
-                    const isLast = i === data.length - 1;
-                    const pct = (value / max) * 100;
+              <div className="w-full overflow-x-auto mb-6">
+                <svg viewBox={`0 0 ${w} ${h}`} className="w-full" style={{ minWidth: 320 }}>
+                  <defs>
+                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#6366f1" stopOpacity="0.5" />
+                      <stop offset="100%" stopColor="#6366f1" stopOpacity="0.02" />
+                    </linearGradient>
+                    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#818cf8" />
+                      <stop offset="100%" stopColor="#34d399" />
+                    </linearGradient>
+                    <filter id="glow">
+                      <feGaussianBlur stdDeviation="3" result="blur" />
+                      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                  </defs>
+
+                  {/* Grid lines */}
+                  {[0.25, 0.5, 0.75, 1].map(t => (
+                    <line
+                      key={t}
+                      x1={padL} y1={padT + chartH - t * chartH}
+                      x2={w - padR} y2={padT + chartH - t * chartH}
+                      stroke="#334155" strokeWidth="0.5" strokeDasharray="4 4"
+                    />
+                  ))}
+
+                  {/* Area fill */}
+                  <path d={areaPath} fill="url(#areaGrad)" />
+
+                  {/* Line */}
+                  <polyline
+                    points={polyline}
+                    fill="none"
+                    stroke="url(#lineGrad)"
+                    strokeWidth="2.5"
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    filter="url(#glow)"
+                  />
+
+                  {/* Bars */}
+                  {points.map((p, i) => {
+                    const isLast = i === n - 1;
+                    const barW = step * 0.35;
+                    const barH = (p.value / max) * chartH;
                     return (
-                      <div key={label} className="flex-1 flex flex-col items-center gap-1">
-                        <span className={`text-[10px] font-black ${isLast ? "text-emerald-400" : "text-indigo-400"}`}>
-                          ${value >= 1000 ? `${value / 1000}T` : `${value}B`}
-                        </span>
-                        <div className="w-full flex items-end" style={{ height: "160px" }}>
-                          <div
-                            className={`w-full rounded-t-lg transition-all ${isLast ? "bg-emerald-500/80" : "bg-indigo-600/70"}`}
-                            style={{ height: `${pct}%` }}
-                          />
-                        </div>
-                        <span className="text-[9px] text-slate-500 uppercase tracking-wide text-center">{label}</span>
-                      </div>
+                      <rect
+                        key={p.label}
+                        x={p.x - barW / 2}
+                        y={padT + chartH - barH}
+                        width={barW}
+                        height={barH}
+                        rx="3"
+                        fill={isLast ? "rgba(52,211,153,0.25)" : "rgba(99,102,241,0.25)"}
+                        stroke={isLast ? "#34d399" : "#6366f1"}
+                        strokeWidth="1"
+                      />
                     );
                   })}
-                </div>
-                <div className="mt-4 flex items-center gap-4">
+
+                  {/* Dots + labels */}
+                  {points.map((p, i) => {
+                    const isLast = i === n - 1;
+                    return (
+                      <g key={p.label}>
+                        {/* Dot glow */}
+                        <circle cx={p.x} cy={p.y} r="6" fill={isLast ? "rgba(52,211,153,0.2)" : "rgba(99,102,241,0.2)"} />
+                        <circle cx={p.x} cy={p.y} r="3.5" fill={isLast ? "#34d399" : "#818cf8"} />
+                        {/* Value label */}
+                        <text
+                          x={p.x}
+                          y={p.y - 10}
+                          textAnchor="middle"
+                          fontSize="9"
+                          fontWeight="800"
+                          fill={isLast ? "#34d399" : "#a5b4fc"}
+                        >
+                          {p.display}
+                        </text>
+                        {/* X label */}
+                        <text
+                          x={p.x}
+                          y={h - 6}
+                          textAnchor="middle"
+                          fontSize="8"
+                          fill="#64748b"
+                        >
+                          {p.label}
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                {/* Legend */}
+                <div className="flex items-center gap-4 mt-2">
                   <div className="flex items-center gap-1.5">
-                    <div className="w-3 h-3 rounded-sm bg-indigo-600/70" />
-                    <span className="text-[10px] text-slate-400">Historical</span>
+                    <div className="w-3 h-3 rounded-sm bg-indigo-500/40 border border-indigo-500" />
+                    <span className="text-[10px] text-slate-400">Historical Rounds</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-3 h-3 rounded-sm bg-emerald-500/80" />
+                    <div className="w-3 h-3 rounded-sm bg-emerald-500/30 border border-emerald-400" />
                     <span className="text-[10px] text-slate-400">IPO Target</span>
                   </div>
                 </div>
