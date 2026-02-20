@@ -97,6 +97,14 @@ function Bear({ children }) {
   );
 }
 
+/* ── Client-only mount guard ── */
+function ClientOnly({ children }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return children;
+}
+
 /* ── Reusable Mini Line Chart ── */
 function MiniLineChart({ data, max, color, gradId, filterId, labelColor }) {
   const w = 260; const h = 200;
