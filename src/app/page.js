@@ -386,20 +386,105 @@ export default function ResearchPage() {
             Starlink now accounts for the majority of revenue and is the primary earnings driver heading into the IPO.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
-            <div>
-              <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-3">Revenue Progression</p>
-              <Row label="2023 Total Revenue"  value="$8.7B"       />
-              <Row label="2024 Total Revenue"  value="$13.1–14.2B" />
-              <Row label="2025E Total Revenue" value="$15.5B+"     />
-              <Row label="2026E Total Revenue" value="$22–24B"     />
-            </div>
-            <div>
-              <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-3">Starlink Segment</p>
-              <Row label="2023 Starlink Revenue"  value="$4.2B"            />
-              <Row label="2024 Starlink Revenue"  value="$8.2B (+95% YoY)" />
-              <Row label="2025E Starlink Revenue" value="~$10B"            />
-              <Row label="Starlink Subscribers"   value="10M+ (Feb 2026)"  />
-            </div>
+            {/* Revenue Chart */}
+            {(() => {
+              const revenue = [
+                { label: "2023", value: 8.7 },
+                { label: "2024", value: 13.7 },
+                { label: "2025E", value: 15.5 },
+              ];
+              const max = 20;
+              const w = 260; const h = 180;
+              const padL = 8; const padR = 8; const padT = 32; const padB = 24;
+              const chartW = w - padL - padR;
+              const chartH = h - padT - padB;
+              const n = revenue.length;
+              const step = chartW / (n - 1);
+              const pts = revenue.map((d, i) => ({
+                x: padL + i * step,
+                y: padT + chartH - (d.value / max) * chartH,
+                ...d,
+              }));
+              const polyline = pts.map(p => `${p.x},${p.y}`).join(" ");
+              const area = `M${pts[0].x},${padT + chartH} ` + pts.map(p => `L${p.x},${p.y}`).join(" ") + ` L${pts[n-1].x},${padT + chartH} Z`;
+              return (
+                <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+                  <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-3">Total Revenue</p>
+                  <svg viewBox={`0 0 ${w} ${h}`} className="w-full">
+                    <defs>
+                      <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
+                      </linearGradient>
+                      <filter id="glow2"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    </defs>
+                    {[0.33, 0.66, 1].map(t => (
+                      <line key={t} x1={padL} y1={padT + chartH - t * chartH} x2={w - padR} y2={padT + chartH - t * chartH} stroke="#1e293b" strokeWidth="1" strokeDasharray="3 3" />
+                    ))}
+                    <path d={area} fill="url(#revGrad)" />
+                    <polyline points={polyline} fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" filter="url(#glow2)" />
+                    {pts.map((p, i) => (
+                      <g key={p.label}>
+                        <circle cx={p.x} cy={p.y} r="5" fill="rgba(16,185,129,0.2)" />
+                        <circle cx={p.x} cy={p.y} r="3" fill="#10b981" />
+                        <text x={p.x} y={p.y - 9} textAnchor="middle" fontSize="9" fontWeight="800" fill="#34d399">${p.value}B</text>
+                        <text x={p.x} y={h - 5} textAnchor="middle" fontSize="8" fill="#64748b">{p.label}</text>
+                      </g>
+                    ))}
+                  </svg>
+                </div>
+              );
+            })()}
+
+            {/* Starlink Revenue Chart */}
+            {(() => {
+              const starlink = [
+                { label: "2023", value: 4.2 },
+                { label: "2024", value: 8.2 },
+                { label: "2025E", value: 10 },
+              ];
+              const max = 14;
+              const w = 260; const h = 180;
+              const padL = 8; const padR = 8; const padT = 32; const padB = 24;
+              const chartW = w - padL - padR;
+              const chartH = h - padT - padB;
+              const n = starlink.length;
+              const step = chartW / (n - 1);
+              const pts = starlink.map((d, i) => ({
+                x: padL + i * step,
+                y: padT + chartH - (d.value / max) * chartH,
+                ...d,
+              }));
+              const polyline = pts.map(p => `${p.x},${p.y}`).join(" ");
+              const area = `M${pts[0].x},${padT + chartH} ` + pts.map(p => `L${p.x},${p.y}`).join(" ") + ` L${pts[n-1].x},${padT + chartH} Z`;
+              return (
+                <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+                  <p className="text-xs text-sky-400 font-bold uppercase tracking-widest mb-3">Starlink Revenue</p>
+                  <svg viewBox={`0 0 ${w} ${h}`} className="w-full">
+                    <defs>
+                      <linearGradient id="slGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.02" />
+                      </linearGradient>
+                      <filter id="glow3"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    </defs>
+                    {[0.33, 0.66, 1].map(t => (
+                      <line key={t} x1={padL} y1={padT + chartH - t * chartH} x2={w - padR} y2={padT + chartH - t * chartH} stroke="#1e293b" strokeWidth="1" strokeDasharray="3 3" />
+                    ))}
+                    <path d={area} fill="url(#slGrad)" />
+                    <polyline points={polyline} fill="none" stroke="#38bdf8" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" filter="url(#glow3)" />
+                    {pts.map((p, i) => (
+                      <g key={p.label}>
+                        <circle cx={p.x} cy={p.y} r="5" fill="rgba(56,189,248,0.2)" />
+                        <circle cx={p.x} cy={p.y} r="3" fill="#38bdf8" />
+                        <text x={p.x} y={p.y - 9} textAnchor="middle" fontSize="9" fontWeight="800" fill="#7dd3fc">${p.value}B</text>
+                        <text x={p.x} y={h - 5} textAnchor="middle" fontSize="8" fill="#64748b">{p.label}</text>
+                      </g>
+                    ))}
+                  </svg>
+                </div>
+              );
+            })()}
           </div>
           <div className="bg-emerald-900/20 border border-emerald-800/50 rounded-xl p-4 mb-4">
             <p className="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-1 flex items-center gap-1">
